@@ -2,4 +2,4 @@ node_modules
 yarn.lock
 .next
 /npm-debug.log
-/.vscode/settings.json
+/.vscode

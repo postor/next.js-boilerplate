@@ -10,10 +10,9 @@ export default (url, option, req, res) => {
 
   return fetch(url, option)
   .then((r)=>{    
-    var setCookie = req?r.headers._headers['custom-set-header']:r.headers.get('custom-set-header')
+    var setCookie = req?r.headers._headers['custom-set-cookie']:r.headers.get('custom-set-cookie')
     if(req && res){
       //server side 
-      console.log('setcookie:'+setCookie)
       res.header('set-cookie', setCookie)
     }else{
       //client side

@@ -26,7 +26,7 @@ app.prepare()
   server.post('/auth', (req, res) => {
     if(req.body && req.body.username === user.username && req.body.passwd === user.passwd){
       res.cookie('user',JSON.stringify(user))
-      res.header('custom-set-header',res.getHeader('set-cookie'))
+      res.header('custom-set-cookie',res.getHeader('set-cookie'))
       res.json(user)
     }else{
       res.json({error: 'wrong pass or no such account',body:req.body})
@@ -36,11 +36,13 @@ app.prepare()
   //模拟登陆后才能用的接口
   server.get('/auth', (req, res) => {
     res.cookie('date',new Date())
-    res.header('custom-set-header',res.getHeader('set-cookie'))
-    if(req.cookies.tempkey === user.tempkey && req.cookies.username === user.username){
+    res.header('custom-set-cookie',res.getHeader('set-cookie'))
+    var tuser = req.cookies.user
+    tuser = tuser && JSON.parse(tuser)
+    if(tuser && tuser.tempkey === user.tempkey && tuser.username === user.username){
       res.json(user)
     }else{
-      res.json({error: 'not loged in'})
+      res.json({error: 'not loged in',tuser})
     }
   })
 
@@ -56,9 +58,9 @@ app.prepare()
   })
 
   //使用http协议
-  server.listen(3080, (err) => {
+  server.listen(80, (err) => {
     if (err) throw err
-    console.log('> Ready http on http://localhost:3080')
+    console.log('> Ready http on http://localhost')
   })
 
   //使用http2协议
@@ -66,9 +68,9 @@ app.prepare()
       key: fs.readFileSync(__dirname + '/server.key'),
       cert:  fs.readFileSync(__dirname + '/server.crt')
   }, server)
-  .listen(3433, (err) => {
+  .listen(433, (err) => {
     if (err) throw err
-    console.log('> Ready http2 on http://localhost:3433')
+    console.log('> Ready http2 on https://localhost')
   })
 })
 .catch((ex) => {

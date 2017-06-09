@@ -64,7 +64,7 @@ export default (Page)=>class Layout extends React.Component {
   handleLogin(username,passwd){
     var form = JSON.stringify({username,passwd})
     
-    fetch('http://localhost:3080/auth',{
+    fetch('http://localhost/auth',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
