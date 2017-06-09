@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import Layout from '../components/MyLayout.js'
 
 class Login extends React.Component {
-    static contextTypes = {
-        user: PropTypes.any
+    
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+        login: PropTypes.func.isRequired,
     }
 
     render() {
-        const context = this.context || window.mycontext
-        const {user} = context
+        const {user} = this.props
         if(user && !user.isGuest){
             return <div>
                 <h1>Login</h1>
@@ -27,12 +28,12 @@ class Login extends React.Component {
             <label>password:</label>
             <input id="passwd" name="passwd" type="password" ref="passwd" />
             <hr />
-            <button onClick={this.handleLogin}>submit</button>
+            <button onClick={this.handleLogin.bind(this)}>submit</button>
         </div>
     }
 
     handleLogin(){
-        this.context.user.login(this.refs.username.nodeValue, this.refs.passwd.nodeValue)
+        this.props.login(this.refs.username.value, this.refs.passwd.value)
     }
 }
 

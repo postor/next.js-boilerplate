@@ -13,8 +13,9 @@ const handle = app.getRequestHandler()
 app.prepare()
 .then(() => {
   const server = express()
-  server.use(bodyParser.urlencoded({ extended: false }))
-  //app.use(cookieParser())
+  server.use(bodyParser.urlencoded({ extended: true }))
+  server.use(bodyParser.json())
+  server.use(cookieParser())
   const user = {
     username: 'test',
     passwd: '123456',
@@ -24,17 +25,18 @@ app.prepare()
   //模拟登陆
   server.post('/auth', (req, res) => {
     if(req.body && req.body.username === user.username && req.body.passwd === user.passwd){
-      res.cookie('tempkey',user.tempkey)
-      res.cookie('passwd',user.passwd)
-      res.cookie('username',user.username)
+      res.cookie('user',JSON.stringify(user))
+      res.header('custom-set-header',res.getHeader('set-cookie'))
       res.json(user)
     }else{
-      res.json({error: 'wrong pass or no such account'})
+      res.json({error: 'wrong pass or no such account',body:req.body})
     }
   })
 
   //模拟登陆后才能用的接口
   server.get('/auth', (req, res) => {
+    res.cookie('date',new Date())
+    res.header('custom-set-header',res.getHeader('set-cookie'))
     if(req.cookies.tempkey === user.tempkey && req.cookies.username === user.username){
       res.json(user)
     }else{
@@ -53,14 +55,20 @@ app.prepare()
     return handle(req, res)
   })
 
+  //使用http协议
+  server.listen(3080, (err) => {
+    if (err) throw err
+    console.log('> Ready http on http://localhost:3080')
+  })
+
   //使用http2协议
   spdy.createServer({
       key: fs.readFileSync(__dirname + '/server.key'),
       cert:  fs.readFileSync(__dirname + '/server.crt')
   }, server)
-  .listen(3000, (err) => {
+  .listen(3433, (err) => {
     if (err) throw err
-    console.log('> Ready on http://localhost:3000')
+    console.log('> Ready http2 on http://localhost:3433')
   })
 })
 .catch((ex) => {

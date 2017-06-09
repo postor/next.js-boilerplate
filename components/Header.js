@@ -13,12 +13,10 @@ const Login = ()=>{
 }
 
 const Logout = (props)=>{
-  return <a style={linkStyle} onClick={() => {
-  }}>{props.username} logout</a>
+  return <a style={linkStyle} href="###" onClick={props.logout}>{props.user.username} logout</a>
 }
 
 const Header = (props) => {
-  
   return (
     <div>
         <Link href="/">
@@ -27,7 +25,7 @@ const Header = (props) => {
         <Link href="/about">
           <a style={linkStyle}>About</a>
         </Link>
-        {(props.user && props.user.username)?<Logout username={props.user.username} />:<Login />}
+        {(props.user && props.user.username)?<Logout {...props} />:<Login />}
     </div>
   )
 } 
