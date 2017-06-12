@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Layout from '../components/MyLayout.js'
+import fetch from '../components/fetch'
 
 class Login extends React.Component {
     
@@ -34,6 +35,15 @@ class Login extends React.Component {
 
     handleLogin(){
         this.props.login(this.refs.username.value, this.refs.passwd.value)
+    }
+
+    static async getInitialProps({req,res}){
+        console.log('see?')
+        return await fetch('http://localhost/auth', {}, req, res)
+        .then(r=>r.json())
+        .then((user)=>{
+            return {loginuser:user}
+        })
     }
 }
 

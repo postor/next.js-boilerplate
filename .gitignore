@@ -3,3 +3,4 @@ yarn.lock
 .next
 /npm-debug.log
 /.vscode
+/yarn-error.log

@@ -5,10 +5,16 @@ const path = require('path')
 const fs = require('fs')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const csurf = require('csurf')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
+const csrfProtection = csurf({ cookie: true })
+const csrfSetHeader = (req,res,next)=>{  
+  res.header('csrf-token', req.csrfToken())
+  next()
+}
 
 app.prepare()
 .then(() => {
@@ -23,7 +29,7 @@ app.prepare()
   }
   
   //模拟登陆
-  server.post('/auth', (req, res) => {
+  server.post('/auth', csrfProtection, csrfSetHeader, (req, res) => {
     if(req.body && req.body.username === user.username && req.body.passwd === user.passwd){
       res.cookie('user',JSON.stringify(user))
       res.header('custom-set-cookie',res.getHeader('set-cookie'))
@@ -33,8 +39,8 @@ app.prepare()
     }
   })
 
-  //模拟登陆后才能用的接口
-  server.get('/auth', (req, res) => {
+  //模拟登陆后表现不同的接口
+  server.get('/auth', csrfProtection, csrfSetHeader, (req, res) => {
     res.cookie('date',new Date())
     res.header('custom-set-cookie',res.getHeader('set-cookie'))
     var tuser = req.cookies.user
