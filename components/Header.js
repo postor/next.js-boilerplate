@@ -1,5 +1,7 @@
-import Link from 'next/link'
+
+import {Link} from './routes'
 import PropTypes from 'prop-types'
+
 
 const linkStyle = {
   marginRight: 15
@@ -7,7 +9,7 @@ const linkStyle = {
 
 
 const Login = ()=>{
-  return <Link href="/login">
+  return <Link route="login">
     <a style={linkStyle}>Login</a>
   </Link>
 }
@@ -19,10 +21,10 @@ const Logout = (props)=>{
 const Header = (props) => {
   return (
     <div>
-        <Link href="/">
+        <Link route="index">
           <a style={linkStyle}>Home</a>
         </Link>
-        <Link href="/about">
+        <Link route="about">
           <a style={linkStyle}>About</a>
         </Link>
         {(props.user && props.user.username)?<Logout {...props} />:<Login />}

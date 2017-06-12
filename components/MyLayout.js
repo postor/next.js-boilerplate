@@ -26,7 +26,6 @@ export default (Page)=>class Layout extends React.Component {
   static async getInitialProps (ctx) {
     var myProp = await getMyProps(ctx)
     var pageProp = Page.getInitialProps?await Page.getInitialProps(ctx):{}
-    console.log(pageProp)
     return {
       ...myProp,
       ...pageProp,

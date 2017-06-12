@@ -5,16 +5,22 @@ const path = require('path')
 const fs = require('fs')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const csurf = require('csurf')
+
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
-const handle = app.getRequestHandler()
+
+//csrf
+const csurf = require('csurf')
 const csrfProtection = csurf({ cookie: true })
 const csrfSetHeader = (req,res,next)=>{  
   res.header('csrf-token', req.csrfToken())
   next()
 }
+
+//routes
+const routes = require('./components/routes')
+const handle = routes.getRequestHandler(app)
 
 app.prepare()
 .then(() => {
@@ -52,16 +58,10 @@ app.prepare()
     }
   })
 
-  //next路由映射
-  server.get('/p/:id', (req, res) => {
-    const actualPage = '/post'
-    const queryParams = { title: req.params.id } 
-    app.render(req, res, actualPage, queryParams)
-  })
+  
 
-  server.get('*', (req, res) => {
-    return handle(req, res)
-  })
+  //next路由映射
+  server.use(handle)
 
   //使用http协议
   server.listen(80, (err) => {

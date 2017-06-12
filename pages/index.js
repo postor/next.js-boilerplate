@@ -1,9 +1,9 @@
 import Layout from '../components/MyLayout.js'
-import Link from 'next/link'
+import {Link} from '../components/routes'
 
 const PostLink = (props) => (
   <li>
-    <Link as={`/p/${props.id}`} href={`/post?title=${props.title}`}>
+    <Link route='post' params={{title: props.title}}>
       <a>{props.title}</a>
     </Link>
   </li>
