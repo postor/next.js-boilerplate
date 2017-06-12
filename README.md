@@ -1,8 +1,18 @@
-# nextjs-cookie-example
+# nextjs-boilerplate
 
-让next.js服务端渲染中的接口调用支持cookie的设置，附带http2支持
+包含内容 include:
 
-add support for cookie pass through in fetching while server side rendering in next.js
+- cookie透传，更好的安全性，能够在服务端渲染的时候处理接口的cookie设置
+- csrf，更好的安全性
+- next-routers, 更好看的url，服务端和客户端同时使用同一个route配置
+- http2支持，更好的性能
+
+----
+
+- cookie pass through, better security, cookie handle for server side rendering 
+- csrf protect, better security
+- next-routes, pritty url, route define for both server side and client side
+- http2 support, better performance
 
 ## 为什么要做这个项目 Why need this project?
 
