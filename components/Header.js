@@ -46,14 +46,14 @@ const Header = (props) => {
     activeClassName: 'on',
     url,
   }
-  return (<div>
+  return (<div className="nav-wrap">
       <MyNav {...tprops} />
-      <style jsx global>{`
-        .mynav {
+      <style jsx>{`
+        .nav-wrap :global(.mynav) {
           border: 1px solid black;
         }
 
-        .mynav .on a {
+        .nav-wrap :global(.mynav .on a) {
           font-weight: bold;
         }
       `}</style>
