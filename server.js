@@ -15,6 +15,8 @@ const csurf = require('csurf')
 const csrfProtection = csurf({ cookie: true })
 const csrfSetHeader = (req,res,next)=>{  
   res.header('csrf-token', req.csrfToken())
+  res.header('Access-Control-Allow-Origin', '*')
+  
   next()
 }
 

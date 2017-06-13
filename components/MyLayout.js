@@ -6,6 +6,8 @@ import Router from 'next/router'
 import Header from './Header'
 import fetch from './fetch'
 
+import apiUrls from './api-urls'
+
 const layoutStyle = {
   margin: 20,
   padding: 20,
@@ -64,7 +66,7 @@ export default (Page)=>class Layout extends React.Component {
   handleLogin(username,passwd){
     var form = JSON.stringify({username,passwd})
     
-    fetch('http://localhost/auth',{
+    fetch(apiUrls('/auth'),{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -81,7 +83,7 @@ export default (Page)=>class Layout extends React.Component {
     .then((user)=>{      
       user.isGuest = false
       this.setState({user})
-      Router.push('/index')
+      Router.push('/')
     })
     .catch((err)=>{
       console.log(err)
@@ -94,7 +96,7 @@ export default (Page)=>class Layout extends React.Component {
       isGuest: true,
     }})
     Cookies.remove('user')
-    Router.push('/index')
+    Router.push('/')
   }
 }
 

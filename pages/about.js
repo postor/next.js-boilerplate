@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 import Layout from '../components/MyLayout.js'
 import fetch from '../components/fetch'
+import apiUrls from '../components/api-urls'
 
 const About = (props) => (
     <div>
@@ -11,7 +12,7 @@ const About = (props) => (
 )
 
 About.getInitialProps = ({req,res})=>{
-    return fetch('http://localhost/auth', {}, req, res)
+    return fetch(apiUrls('/auth',req), {}, req, res)
     .then(r=>r.json())
     .then((user)=>{
         return {about:{user, cookieDate: Cookies.get('date')}}

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Layout from '../components/MyLayout.js'
 import fetch from '../components/fetch'
+import apiUrls from '../components/api-urls'
 
 class Login extends React.Component {
     
@@ -30,6 +31,7 @@ class Login extends React.Component {
             <input id="passwd" name="passwd" type="password" ref="passwd" />
             <hr />
             <button onClick={this.handleLogin.bind(this)}>submit</button>
+            <p>use test:123456 to login</p>
         </div>
     }
 
@@ -38,7 +40,7 @@ class Login extends React.Component {
     }
 
     static async getInitialProps({req,res}){
-        return await fetch('http://localhost/auth', {}, req, res)
+        return await fetch(apiUrls('/auth',req), {}, req, res)
         .then(r=>r.json())
         .then((user)=>{
             return {loginuser:user}

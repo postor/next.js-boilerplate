@@ -1,10 +1,13 @@
 # nextjs-boilerplate
 
+demo:  https://hello-next-lhafgwnfxp.now.sh/
+
 包含内容 include:
 
 - cookie透传，更好的安全性，能够在服务端渲染的时候处理接口的cookie设置
 - csrf，更好的安全性
 - next-routers, 更好看的url，服务端和客户端同时使用同一个route配置
+- 导航条组件， 自动判断所处的页面
 - http2支持，更好的性能
 
 ----
@@ -12,6 +15,7 @@
 - cookie pass through, better security, cookie handle for server side rendering 
 - csrf protect, better security
 - next-routes, pritty url, route define for both server side and client side
+- navigation component, auto highlite current link
 - http2 support, better performance
 
 ## 为什么要做这个项目 Why need this project?
