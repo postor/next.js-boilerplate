@@ -13,15 +13,20 @@ const activeStyle = {
 }
 
 const Header = (props) => {
-  var url = props.url
+  var {url} = props
   var links = [{
       linkProps: {        route: "index"      },
       children: <a style={linkStyle}>Home</a>,
     },{
       linkProps: {        route: "about"      },
-      url,
       children: <a style={linkStyle}>About</a>,
       activeStyle: {        color: 'blue',      },
+    },{
+      linkProps: {        route: "posts"      },
+      children: <a style={linkStyle}>Posts</a>,
+      checkIsActive: ({pathname})=>{
+        return ('/post' ===  pathname) || ('/posts' ===  pathname)
+      }
     },
     (props.user && props.user.username)?{
       nolink: true,
