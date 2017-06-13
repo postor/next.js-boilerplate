@@ -1,7 +1,3 @@
-/**
- * @author joshlin <postor@gmail.com>
- */
-
 import { default as routes, Link} from './routes'
 
 /**
@@ -13,8 +9,6 @@ import { default as routes, Link} from './routes'
  * @param {Object} props.linkProps Link（来自react-routes）的属性
  * @param {Object} props.activeStyle 激活状态的样式
  * @param {string} props.activeClassName 激活时追加的类
- * @param {Object} props.activeLinkStyle 激活状态的样式
- * @param {string} props.activeLinkClassName 激活时追加的类
  * @param {boolean} props.nolink 不使用Link的设置为true
  * @param {function=isActive} props.checkIsActive 验证是否为激活为激活的回调，{@link isActive}
  * @param {ReactDom} props.children 子内容
