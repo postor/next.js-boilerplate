@@ -1,7 +1,6 @@
-
 import PropTypes from 'prop-types'
-import {Link,MyNav} from './routes'
-
+import {Link} from './routes'
+import MyNav from './MyNav'
 
 const linkStyle = {
   marginRight: 15
@@ -13,75 +12,48 @@ const activeStyle = {
   backgroundColor: '#ddd',
 }
 
-const Login = ()=>{
-  return <Link route="login">
-    <a style={linkStyle}>Login</a>
-  </Link>
-}
-
-const Logout = (props)=>{
-  return <a style={linkStyle} href="###" onClick={props.logout}>{props.user.username} logout</a>
-}
-
 const Header = (props) => {
-  return (
-    <div>
-        <Link route="index">
-          <a style={linkStyle}>Home</a>
-        </Link>
-        <Link route="about">
-          <a style={linkStyle}>About</a>
-        </Link>
-        {(props.user && props.user.username)?<Logout {...props} />:<Login />}
+  var url = props.url
+  var links = [{
+      linkProps: {        route: "index"      },
+      children: <a style={linkStyle}>Home</a>,
+    },{
+      linkProps: {        route: "about"      },
+      url,
+      children: <a style={linkStyle}>About</a>,
+      activeStyle: {        color: 'blue',      },
+    },
+    (props.user && props.user.username)?{
+      nolink: true,
+      children: <a style={linkStyle} onClick={props.logout}>Logout</a>,
+      activeStyle,
+    }:{
+      linkProps: {        route: "login"      },
+      children: <a style={linkStyle}>login</a>,
+    },
+  ]
+  var tprops = {
+    ulProps: {
+      className: 'mynav',
+    },
+    links,
+    activeStyle,
+    activeClassName: 'on',
+    url,
+  }
+  return (<div>
+      <MyNav {...tprops} />
+      <style jsx global>{`
+        .mynav {
+          border: 1px solid black;
+        }
+
+        .mynav .on a {
+          font-weight: bold;
+        }
+      `}</style>
     </div>
   )
 } 
 
-const Header1 = (props) => {
-  var url = props.url
-  var links = [
-    {
-      linkProps: {
-        route: "index"
-      },
-      liProps: {},
-      url,
-      children: <a style={linkStyle}>Home</a>,
-      activeStyle,
-    },
-    {
-      linkProps: {
-        route: "about"
-      },
-      liProps: {},
-      url,
-      children: <a style={linkStyle}>About</a>,
-      activeStyle,
-    },
-    (props.user && props.user.username)?{
-      nolink: true,
-      linkProps: {},
-      liProps: {},
-      url,
-      children: <a style={linkStyle} onClick={props.logout}>Logout</a>,
-      activeStyle,
-    }:{
-      linkProps: {
-        route: "login"
-      },
-      liProps: {},
-      url,
-      children: <a style={linkStyle}>login</a>,
-      activeStyle,
-    },
-  ]
-  var tprops = {
-    ulProps: {},
-    links,
-  }
-  return (
-    <MyNav {...tprops} />
-  )
-} 
-
-export default Header1
+export default Header

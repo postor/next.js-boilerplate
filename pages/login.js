@@ -38,7 +38,6 @@ class Login extends React.Component {
     }
 
     static async getInitialProps({req,res}){
-        console.log('see?')
         return await fetch('http://localhost/auth', {}, req, res)
         .then(r=>r.json())
         .then((user)=>{
