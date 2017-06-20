@@ -1,5 +1,5 @@
 import Layout from '../components/MyLayout.js'
-import {Link} from '../components/routes'
+import {Link} from '../tools/routes'
 
 const PostLink = (props) => (
   <li>

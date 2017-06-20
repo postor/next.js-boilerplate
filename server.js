@@ -21,22 +21,29 @@ const csrfSetHeader = (req,res,next)=>{
 }
 
 //routes
-const routes = require('./components/routes')
+const routes = require('./tools/routes')
 const handle = routes.getRequestHandler(app)
 
 app.prepare()
 .then(() => {
   const server = express()
+
+  //static
+  server.use('/static',express.static('static'))
+
+  //cookie
   server.use(bodyParser.urlencoded({ extended: true }))
   server.use(bodyParser.json())
   server.use(cookieParser())
+
+  //example user
   const user = {
     username: 'test',
     passwd: '123456',
     tempkey: 'tempkey',
   }
-  
-  //模拟登陆
+
+  //login
   server.post('/auth', csrfProtection, csrfSetHeader, (req, res) => {
     if(req.body && req.body.username === user.username && req.body.passwd === user.passwd){
       res.cookie('user',JSON.stringify(user))
@@ -47,7 +54,7 @@ app.prepare()
     }
   })
 
-  //模拟登陆后表现不同的接口
+  //this api acts different after login
   server.get('/auth', csrfProtection, csrfSetHeader, (req, res) => {
     res.cookie('date',new Date())
     res.header('custom-set-cookie',res.getHeader('set-cookie'))
@@ -62,16 +69,16 @@ app.prepare()
 
   
 
-  //next路由映射
+  //next routes
   server.use(handle)
 
-  //使用http协议
+  //http
   server.listen(80, (err) => {
     if (err) throw err
     console.log('> Ready http on http://localhost')
   })
 
-  //使用http2协议
+  //http2
   spdy.createServer({
       key: fs.readFileSync(__dirname + '/server.key'),
       cert:  fs.readFileSync(__dirname + '/server.crt')

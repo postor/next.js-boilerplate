@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Layout from '../components/MyLayout.js'
-import fetch from '../components/fetch'
-import apiUrls from '../components/api-urls'
+import fetch from '../tools/fetch'
+import apiUrls from '../tools/api-urls'
 
 class Login extends React.Component {
     

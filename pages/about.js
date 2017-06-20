@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie'
 
 import Layout from '../components/MyLayout.js'
-import fetch from '../components/fetch'
-import apiUrls from '../components/api-urls'
+import fetch from '../tools/fetch'
+import apiUrls from '../tools/api-urls'
 
 const About = (props) => (
     <div>

@@ -1,4 +1,4 @@
-import { default as routes, Link} from './routes'
+import { default as routes, Link} from '../tools/routes'
 
 /**
  * NavItem自定义菜单组件

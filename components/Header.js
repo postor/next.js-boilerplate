@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import {Link} from './routes'
+import { Link } from '../tools/routes'
 import MyNav from './MyNav'
 
 const linkStyle = {
@@ -13,27 +13,27 @@ const activeStyle = {
 }
 
 const Header = (props) => {
-  var {url} = props
+  var { url } = props
   var links = [{
-      linkProps: {        route: "index"      },
-      children: <a style={linkStyle}>Home</a>,
-    },{
-      linkProps: {        route: "about"      },
-      children: <a style={linkStyle}>About</a>,
-      activeStyle: {        color: 'blue',      },
-    },{
-      linkProps: {        route: "posts"      },
-      children: <a style={linkStyle}>Posts</a>,
-      checkIsActive: ({pathname})=>{
-        return ('/post' ===  pathname) || ('/posts' ===  pathname)
-      }
-    },
-    (props.user && props.user.username)?{
-      nolink: true,
-      children: <a style={linkStyle} onClick={props.logout}>Logout</a>,
-      activeStyle,
-    }:{
-      linkProps: {        route: "login"      },
+    linkProps: { route: "index" },
+    children: <a style={linkStyle}>Home</a>,
+  }, {
+    linkProps: { route: "about" },
+    children: <a style={linkStyle}>About</a>,
+    activeStyle: { color: 'blue', },
+  }, {
+    linkProps: { route: "posts" },
+    children: <a style={linkStyle}>Posts</a>,
+    checkIsActive: ({ pathname }) => {
+      return ('/post' === pathname) || ('/posts' === pathname)
+    }
+  },
+  (props.user && props.user.username) ? {
+    nolink: true,
+    children: <a style={linkStyle} onClick={props.logout}>Logout</a>,
+    activeStyle,
+  } : {
+      linkProps: { route: "login" },
       children: <a style={linkStyle}>login</a>,
     },
   ]
@@ -47,8 +47,8 @@ const Header = (props) => {
     url,
   }
   return (<div className="nav-wrap">
-      <MyNav {...tprops} />
-      <style jsx>{`
+    <MyNav {...tprops} />
+    <style jsx>{`
         .nav-wrap :global(.mynav) {
           border: 1px solid black;
         }
@@ -57,8 +57,8 @@ const Header = (props) => {
           font-weight: bold;
         }
       `}</style>
-    </div>
+  </div>
   )
-} 
+}
 
 export default Header

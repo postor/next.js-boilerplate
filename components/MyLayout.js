@@ -4,9 +4,9 @@ import Cookies from 'js-cookie'
 import Router from 'next/router'
 
 import Header from './Header'
-import fetch from './fetch'
+import fetch from '../tools/fetch'
 
-import apiUrls from './api-urls'
+import apiUrls from '../tools/api-urls'
 
 const layoutStyle = {
   margin: 20,
