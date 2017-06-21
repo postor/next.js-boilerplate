@@ -5,20 +5,11 @@ const path = require('path')
 const fs = require('fs')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-
+const apiRoute = require('./tools/api-route')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 
-//csrf
-const csurf = require('csurf')
-const csrfProtection = csurf({ cookie: true })
-const csrfSetHeader = (req,res,next)=>{  
-  res.header('csrf-token', req.csrfToken())
-  res.header('Access-Control-Allow-Origin', '*')
-  
-  next()
-}
 
 //routes
 const routes = require('./tools/routes')
@@ -36,38 +27,8 @@ app.prepare()
   server.use(bodyParser.json())
   server.use(cookieParser())
 
-  //example user
-  const user = {
-    username: 'test',
-    passwd: '123456',
-    tempkey: 'tempkey',
-  }
-
-  //login
-  server.post('/auth', csrfProtection, csrfSetHeader, (req, res) => {
-    if(req.body && req.body.username === user.username && req.body.passwd === user.passwd){
-      res.cookie('user',JSON.stringify(user))
-      res.header('custom-set-cookie',res.getHeader('set-cookie'))
-      res.json(user)
-    }else{
-      res.json({error: 'wrong pass or no such account',body:req.body})
-    }
-  })
-
-  //this api acts different after login
-  server.get('/auth', csrfProtection, csrfSetHeader, (req, res) => {
-    res.cookie('date',new Date())
-    res.header('custom-set-cookie',res.getHeader('set-cookie'))
-    var tuser = req.cookies.user
-    tuser = tuser && JSON.parse(tuser)
-    if(tuser && tuser.tempkey === user.tempkey && tuser.username === user.username){
-      res.json(user)
-    }else{
-      res.json({error: 'not loged in',tuser})
-    }
-  })
-
-  
+  //api
+  server.use('/api',apiRoute)
 
   //next routes
   server.use(handle)
