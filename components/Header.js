@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types'
-import { Link } from '../tools/routes'
-import MyNav from './MyNav'
+import { default as routes, Link } from '../tools/routes'
+import getNavigation from 'next-navigation'
+
+const MyNav = getNavigation(routes)
+
 
 const linkStyle = {
   marginRight: 15
