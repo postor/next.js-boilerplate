@@ -5,8 +5,11 @@ import Router from 'next/router'
 
 import Header from './Header'
 import fetch from '../tools/fetch'
-
 import apiUrls from '../tools/api-urls'
+import i18nHelper from '../tools/i18n-helper'
+import getTranslation from '../tools/get-translation'
+
+import { I18nextProvider } from 'react-i18next'
 
 const layoutStyle = {
   margin: 20,
@@ -17,6 +20,7 @@ const layoutStyle = {
 export default (Page)=>class Layout extends React.Component {  
   constructor(props) {
     super(props)
+    this.i18n = i18nHelper.getI18n(props.translations)
   }
 
   static propTypes = {
@@ -28,9 +32,16 @@ export default (Page)=>class Layout extends React.Component {
   static async getInitialProps (ctx) {
     var myProp = await getMyProps(ctx)
     var pageProp = Page.getInitialProps?await Page.getInitialProps(ctx):{}
+
+    var translations = await getTranslation(
+      i18nHelper.getCurrentLanguage(ctx.req),
+      pageProp.translateNS?pageProp.translateNS:['common'],
+      ctx.req
+    )
     return {
       ...myProp,
       ...pageProp,
+      translations
     }
 
     async function getMyProps (ctx){
@@ -57,10 +68,12 @@ export default (Page)=>class Layout extends React.Component {
         ...this.props,
         ...this.state
     }
-    return <div style={layoutStyle}>
-      <Header {...props} />
-      <Page {...props} />
-    </div>
+    return <I18nextProvider i18n={this.i18n}>
+      <div style={layoutStyle}>
+        <Header {...props} />
+        <Page {...props} />
+      </div>
+    </I18nextProvider>
   } 
 
   handleLogin(username,passwd){

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { default as routes, Link } from '../tools/routes'
 import getNavigation from 'next-navigation'
+import { translate } from 'react-i18next'
 
 const MyNav = getNavigation(routes)
 
@@ -19,7 +20,7 @@ const Header = (props) => {
   var { url } = props
   var links = [{
     linkProps: { route: "index" },
-    children: <a style={linkStyle}>Home</a>,
+    children: <a style={linkStyle}>Home</a>, //translate((props)=>(<a style={linkStyle}>{props.t('Home')}</a>
   }, {
     linkProps: { route: "about" },
     children: <a style={linkStyle}>About</a>,

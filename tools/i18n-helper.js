@@ -1,27 +1,26 @@
 import Cookies from 'js-cookie'
 import locale from 'locale'
-import fetch from './fetch'
-import apiUrls from './api-urls'
+import i18n from 'i18next'
+
 /**
  * 多国语言帮助类
  */
-export default class I18nHelper {
+class I18nHelper {
   constructor(opt = {}) {
     const { 
       defaultLang = 'en', 
       supportLangs = ['en'], 
       langCookieName = 'lang',
-      langCookieExpire = 365, 
-      translateBaseUrl = '/', 
-      translateIncludeFiles = ['common'] 
+      langCookieExpire = 365
     } = opt
 
     this.defaultLang = defaultLang
     this.supportLangs = supportLangs
     this.langCookieName = langCookieName
     this.langCookieExpire = langCookieExpire
-    this.translateBaseUrl = translateBaseUrl
-    this.translateIncludeFiles = translateIncludeFiles
+
+    this.i18n = null
+    this.currentLang = null
   }
 
 
@@ -30,27 +29,35 @@ export default class I18nHelper {
    * @param {Request} req Request 对象来自express 
    */
   getCurrentLanguage(req) {
-    //from cookie
-    var fromCookie = req ? req.cookies[this.langCookieName] : Cookies.get(this.langCookieName)
-    if (this.supportLangs.includes(fromCookie)) return fromCookie
+    var getCurrentLang = ()=>{
+      //from cookie
+      var fromCookie = req ? req.cookies[this.langCookieName] : Cookies.get(this.langCookieName)
+      if (this.supportLangs.includes(fromCookie)) return fromCookie
 
 
-    var supported = new locale.Locales(this.supportLangs, this.defaultLang)
-    if (req) {
-      var locales = new locale.Locales(req.headers["accept-language"])
-      return locales.best(supported)
-    } else {
-      var locales = new locale.Locales(navigator.language || navigator.userLanguage)
-      return locales.best(supported)
+      var supported = new locale.Locales(this.supportLangs, this.defaultLang)
+      if (req) {
+        var locales = new locale.Locales(req.headers["accept-language"])
+        return locales.best(supported).language
+      } else {
+        var locales = new locale.Locales(navigator.language || navigator.userLanguage)
+        return locales.best(supported).language
+      }
     }
+    
+    !this.currentLang && (this.currentLang = getCurrentLang())
+    console.log('best lang',this.currentLang)
+    return this.currentLang
   }
 
   /**
-   * 设置cookie
+   * 设置cookie（只会在客户端发生）
    * @param {string} lang 
    */
   setCurrentLanguage(lang) {
     Cookies.set(this.langCookieName, { expires: this.langCookieExpire })
+    this.currentLang = lang
+    this.i18n.setLng(lang)
   }
 
   /**
@@ -58,28 +65,27 @@ export default class I18nHelper {
    */
   clearCurrentLanguage() {
     Cookies.remove(this.langCookieName)
-  }
+    this.currentLang = null
+  }  
 
-  /**
-   * 
-   * @param {Request} req Request 对象来自express
-   * @param {string} page translate filepath
-   * @return {i18n}  
-   */
-  async getTranslation(req, page) {
-    const lang = this.getCurrentLanguage(req)
-    const response = await fetch(this.getTranslationPath(lang,page))
-    const json = await response.json()
+  getI18n(translationData){
+    var that = this
+    if(!this.i18n){
+      var ns = ['common']
+      translationData && translationData[this.currentLang] && (ns = Object.keys(translationData[this.currentLang]))
 
-    return {
-      [lang]: {
-        [file]: json
-      }
+      this.i18n = i18n.init({
+        lng: that.getCurrentLanguage(), // active language http://i18next.com/translate/
+        fallbackLng: that.defaultLang,
+        resources: translationData,
+        ns,
+        defaultNS: 'common',
+        debug: false
+      })
+
     }
-  }
-
-  getTranslationPath(lang,page) {
-    const baseUrl = apiUrl(`${this.translateBaseUrl}${lang}/${page}.json`)
-
+    return this.i18n
   }
 }
+
+export default new I18nHelper()
