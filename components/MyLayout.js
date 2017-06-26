@@ -34,13 +34,13 @@ export default (Page)=>class Layout extends React.Component {
       getMyProps(ctx),
       Page.getInitialProps?Page.getInitialProps(ctx):Promise.resolve({})
     ])
-    
+
     //translation
     var {translateNS=[]} = pageProp
     translateNS = myProp.translateNS.concat(translateNS).filter(function(item, pos, self) {
       return self.indexOf(item) == pos;
     })
-    console.log(translateNS)
+    
     var translations = await getTranslation(
       i18nHelper.getCurrentLanguage(ctx.req),
       translateNS,

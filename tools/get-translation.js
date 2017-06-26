@@ -21,7 +21,7 @@ export default async function getTranslation(lang, files, req) {
     langData[file] = json
     return true    
   }))
-  console.log(langData,lang)
+  
   return {
     [lang]: langData
   }

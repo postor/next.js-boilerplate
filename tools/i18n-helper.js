@@ -2,6 +2,8 @@ import Cookies from 'js-cookie'
 import locale from 'locale'
 import i18n from 'i18next'
 import { translate } from 'react-i18next'
+import XHR from 'i18next-xhr-backend'
+import Router from 'next/router'
 
 /**
  * 多国语言帮助类
@@ -47,7 +49,7 @@ class I18nHelper {
     }
     
     !this.currentLang && (this.currentLang = getCurrentLang())
-    
+
     return this.currentLang
   }
 
@@ -56,9 +58,9 @@ class I18nHelper {
    * @param {string} lang 
    */
   setCurrentLanguage(lang) {
-    Cookies.set(this.langCookieName, { expires: this.langCookieExpire })
+    Cookies.set(this.langCookieName, lang, { expires: this.langCookieExpire })
     this.currentLang = lang
-    this.i18n.setLng(lang)
+    Router.reload(Router.route)
   }
 
   /**
@@ -71,18 +73,19 @@ class I18nHelper {
 
   getI18n(translationData){
     var that = this
+
     if(!this.i18n){
       var ns = ['common']
       translationData && translationData[this.currentLang] && (ns = Object.keys(translationData[this.currentLang]))
-
-      this.i18n = i18n.init({
+      var options = {
         lng: that.getCurrentLanguage(), // active language http://i18next.com/translate/
         fallbackLng: that.defaultLang,
         resources: translationData,
         ns,
         defaultNS: 'common',
         debug: false
-      })
+      }
+      this.i18n = i18n.init(options)
     }
     return this.i18n
   }

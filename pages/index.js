@@ -10,12 +10,12 @@ const Index = () => {
     <h1>{t('My Blog')}</h1>
     <p>
       <Link route='posts'>
-        <a>See my posts >></a>
+        <a>{t('See my posts')} >></a>
       </Link>
     </p>
     <p>
       <Link route='post'  params={{title: 'Hello Next.js'}} >
-        <a>See my first post >></a>
+        <a>{t('See my first post')} >></a>
       </Link>
     </p>
     
