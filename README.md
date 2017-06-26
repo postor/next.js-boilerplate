@@ -9,6 +9,7 @@ demo:  https://hello-next-lhafgwnfxp.now.sh/
 - next-routers, 更好看的url，服务端和客户端同时使用同一个route配置
 - 导航条组件， 自动判断所处的页面，支持定制逻辑
 - http2支持，更好的性能
+- i18next
 
 ----
 
@@ -17,6 +18,7 @@ demo:  https://hello-next-lhafgwnfxp.now.sh/
 - next-routes, pritty url, route define for both server side and client side
 - navigation component, auto highlite current link
 - http2 support, better performance
+- i18next
 
 ## 为什么要做这个项目 Why need this project?
 
