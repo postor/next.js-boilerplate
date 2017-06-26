@@ -30,32 +30,46 @@ export default (Page)=>class Layout extends React.Component {
 
 
   static async getInitialProps (ctx) {
-    var myProp = await getMyProps(ctx)
-    var pageProp = Page.getInitialProps?await Page.getInitialProps(ctx):{}
-
+    var [myProp = {},pageProp = {}] = await Promise.all([
+      getMyProps(ctx),
+      Page.getInitialProps?Page.getInitialProps(ctx):Promise.resolve({})
+    ])
+    
+    //translation
+    var {translateNS=[]} = pageProp
+    translateNS = myProp.translateNS.concat(translateNS).filter(function(item, pos, self) {
+      return self.indexOf(item) == pos;
+    })
+    console.log(translateNS)
     var translations = await getTranslation(
       i18nHelper.getCurrentLanguage(ctx.req),
-      pageProp.translateNS?pageProp.translateNS:['common'],
+      translateNS,
       ctx.req
     )
+
     return {
       ...myProp,
       ...pageProp,
       translations
     }
-
+    /** */
     async function getMyProps (ctx){
       const { req, res } = ctx
+      var rtn = {
+        user: {
+          isGuest: true
+        },
+        translateNS: ['common']
+      } 
       var user = req?req.cookies.user:Cookies.get('user')
       if(user){
-        user = JSON.parse(user)
-        user.isGuest = false            
-        return { user,}
-      }else{
-        return {
-          user: {isGuest: true},
-        }    
-      } 
+        try{          
+          user = JSON.parse(user)
+          user.isGuest = false            
+          rtn.user = user
+        }catch(e){}
+      }
+      return rtn 
     }
   }
 
@@ -79,7 +93,7 @@ export default (Page)=>class Layout extends React.Component {
   handleLogin(username,passwd){
     var form = JSON.stringify({username,passwd})
     
-    fetch(apiUrls('/auth'),{
+    fetch(apiUrls('/api/auth'),{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

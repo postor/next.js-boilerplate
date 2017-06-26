@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import locale from 'locale'
 import i18n from 'i18next'
+import { translate } from 'react-i18next'
 
 /**
  * 多国语言帮助类
@@ -46,7 +47,7 @@ class I18nHelper {
     }
     
     !this.currentLang && (this.currentLang = getCurrentLang())
-    console.log('best lang',this.currentLang)
+    
     return this.currentLang
   }
 
@@ -82,10 +83,27 @@ class I18nHelper {
         defaultNS: 'common',
         debug: false
       })
-
     }
     return this.i18n
   }
+
+  /**
+   * 获取翻译
+   * 
+   * @param {any} str 
+   * @param {string} [ns='common'] 
+   * @memberof I18nHelper
+   * @return {Component} react
+   */
+  t(str,data){
+    return this.i18n.t(str,data)
+  }
+
+  getFixedT(ns){
+    return this.i18n.getFixedT(this.getCurrentLanguage(),ns)
+  }
 }
 
-export default new I18nHelper()
+export default new I18nHelper({
+  supportLangs: ['en','zh']
+})

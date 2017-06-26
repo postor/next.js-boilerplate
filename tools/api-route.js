@@ -33,7 +33,13 @@ router.get('/auth', csrfProtection, csrfSetHeader, (req, res) => {
   res.cookie('date',new Date())
   res.header('custom-set-cookie',res.getHeader('set-cookie'))
   var tuser = req.cookies.user
-  tuser = tuser && JSON.parse(tuser)
+  if(tuser && typeof tuser === 'string'){
+    try{
+      tuser = JSON.parse(tuser)
+    }catch(e){
+      tuser = {}
+    }
+  }
   if(tuser && tuser.tempkey === user.tempkey && tuser.username === user.username){
     res.json(user)
   }else{

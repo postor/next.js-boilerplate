@@ -40,7 +40,7 @@ class Login extends React.Component {
     }
 
     static async getInitialProps({req,res}){
-        return await fetch(apiUrls('/auth',req), {}, req, res)
+        return await fetch(apiUrls('/api/auth',req), {}, req, res)
         .then(r=>r.json())
         .then((user)=>{
             return {loginuser:user}

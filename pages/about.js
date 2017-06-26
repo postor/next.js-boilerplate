@@ -12,7 +12,7 @@ const About = (props) => (
 )
 
 About.getInitialProps = ({req,res})=>{
-    return fetch(apiUrls('/auth',req), {}, req, res)
+    return fetch(apiUrls('/api/auth',req), {}, req, res)
     .then(r=>r.json())
     .then((user)=>{
         return {about:{user, cookieDate: Cookies.get('date')}}
