@@ -3,7 +3,6 @@ import locale from 'locale'
 import i18n from 'i18next'
 import { translate } from 'react-i18next'
 import XHR from 'i18next-xhr-backend'
-import Router from 'next/router'
 
 /**
  * 多国语言帮助类
@@ -14,14 +13,18 @@ class I18nHelper {
       defaultLang = 'en', 
       supportLangs = ['en'], 
       langCookieName = 'lang',
-      langCookieExpire = 365
+      langCookieExpire = 365, 
+      i18nXHROption =  {
+        loadPath: '/static/locales/{{lng}}/{{ns}}.json',
+        addPath: '/static/locales/{{lng}}/{{ns}}.json',
+      },
     } = opt
 
     this.defaultLang = defaultLang
     this.supportLangs = supportLangs
     this.langCookieName = langCookieName
     this.langCookieExpire = langCookieExpire
-
+    this.i18nXHROption = i18nXHROption
     this.i18n = null
     this.currentLang = null
   }
@@ -35,6 +38,7 @@ class I18nHelper {
     var getCurrentLang = ()=>{
       //from cookie
       var fromCookie = req ? req.cookies[this.langCookieName] : Cookies.get(this.langCookieName)
+      console.log(fromCookie)
       if (this.supportLangs.includes(fromCookie)) return fromCookie
 
 
@@ -48,19 +52,22 @@ class I18nHelper {
       }
     }
     
-    !this.currentLang && (this.currentLang = getCurrentLang())
-
+    (req || !this.currentLang) && (this.currentLang = getCurrentLang())
+    console.log([!!req,this.currentLang])
     return this.currentLang
   }
 
   /**
    * 设置cookie（只会在客户端发生）
    * @param {string} lang 
+   * @param {instance of I18n} i18n
+   * @param {Object} langData
    */
-  setCurrentLanguage(lang) {
+  setCurrentLanguage(lang, i18n) {
+    if(typeof window === 'undefined') return
     Cookies.set(this.langCookieName, lang, { expires: this.langCookieExpire })
+    this.i18n.changeLanguage(lang)
     this.currentLang = lang
-    Router.reload(Router.route)
   }
 
   /**
@@ -72,38 +79,47 @@ class I18nHelper {
   }  
 
   getI18n(translationData){
-    var that = this
+    const that = this
+    const isServerSide = (typeof window === 'undefined')
+    if(isServerSide) return innerGetI18n()
 
-    if(!this.i18n){
+    if(this.i18n) return this.i18n
+
+    this.i18n = innerGetI18n()
+    return this.i18n
+
+    function innerGetI18n(){
+      console.log('new i18n')
       var ns = ['common']
-      translationData && translationData[this.currentLang] && (ns = Object.keys(translationData[this.currentLang]))
+      translationData && translationData[that.currentLang] && (ns = Object.keys(translationData[that.currentLang])) 
       var options = {
         lng: that.getCurrentLanguage(), // active language http://i18next.com/translate/
         fallbackLng: that.defaultLang,
-        resources: translationData,
+        resources: isServerSide?translationData:undefined,
         ns,
         defaultNS: 'common',
-        debug: false
+        debug: true,
+        initImmediate: isServerSide,
       }
-      this.i18n = i18n.init(options)
+
+      var i18nInstance = i18n
+      .use(XHR)
+      .init(
+        {
+          ...options,
+          backend: that.i18nXHROption
+        }
+      )
+
+      translationData && Object.keys(translationData).forEach((lang)=>{
+        Object.keys(translationData[lang]).forEach((ns)=>{          
+          i18nInstance.addResourceBundle(lang,ns,translationData[lang][ns])
+        })
+      })
+
+      return i18nInstance
     }
-    return this.i18n
-  }
-
-  /**
-   * 获取翻译
-   * 
-   * @param {any} str 
-   * @param {string} [ns='common'] 
-   * @memberof I18nHelper
-   * @return {Component} react
-   */
-  t(str,data){
-    return this.i18n.t(str,data)
-  }
-
-  getFixedT(ns){
-    return this.i18n.getFixedT(this.getCurrentLanguage(),ns)
+    
   }
 }
 

@@ -1,3 +1,6 @@
+
+import React from 'react';
+import { translate } from 'react-i18next';
 import PropTypes from 'prop-types'
 import getNavigation from 'next-navigation'
 
@@ -17,42 +20,52 @@ const activeStyle = {
   backgroundColor: '#ddd',
 }
 
-const Header = (props) => {
-  const t = i18nHelper.getFixedT('common')
-  var { url } = props
-
-  var tprops = {
-    ulProps: {
-      className: 'mynav',
-    },
-    links: getLinks(),
-    activeStyle,
-    activeClassName: 'on',
-    url,
+class Header extends React.Component {
+  static contextTypes = {
+    i18n: PropTypes.any
   }
 
-  function handleChangeLanguage(e){
-    i18nHelper.setCurrentLanguage(e.target.value)
+  constructor(props,context) {
+    super(props)
   }
 
-  return (<div className="nav-wrap">
-    <MyNav {...tprops} />
-    <style jsx>{`
-        .nav-wrap :global(.mynav) {
-          border: 1px solid black;
-        }
+  handleChangeLanguage(e){
+    i18nHelper.setCurrentLanguage(e.target.value);
+  }
 
-        .nav-wrap :global(.mynav .on a) {
-          font-weight: bold;
-        }
-      `}</style>
-  </div>
-  )
+  render(){
+    const { url, t } = this.props
 
-  function getLinks(){
+    var tprops = {
+      ulProps: {
+        className: 'mynav',
+      },
+      links: this.getLinks(t),
+      activeStyle,
+      activeClassName: 'on',
+      url,
+    }
+    return (<div className="nav-wrap">
+      <MyNav {...tprops} />
+      <style jsx>{`
+          .nav-wrap :global(.mynav) {
+            border: 1px solid black;
+          }
+
+          .nav-wrap :global(.mynav .on a) {
+            font-weight: bold;
+          }
+        `}</style>
+    </div>
+    )
+  }
+
+  getLinks(t){
+    var that = this
+    var {user, logout} = this.props
     return [{
       linkProps: { route: "index" },
-      children: <a style={linkStyle}>{t('Home')}</a>, //translate((props)=>(<a style={linkStyle}>{props.t('Home')}</a>
+      children: <a style={linkStyle}>{t('Home')}</a>,
     }, {
       linkProps: { route: "about" },
       children: <a style={linkStyle}>{t('About')}</a>,
@@ -64,15 +77,15 @@ const Header = (props) => {
         return ('/post' === pathname) || ('/posts' === pathname)
       }
     },
-    (props.user && props.user.username) ? {
+    (user && user.username) ? {
       nolink: true,
-      children: <a style={linkStyle} onClick={props.logout}>{t('Logout')}</a>,
+      children: <a style={linkStyle} onClick={logout}>{t('Logout')}</a>,
     } : {
       linkProps: { route: "login" },
       children: <a style={linkStyle}>{t('Login')}</a>,
     }, {
       nolink: true,
-      children: (<select value={i18nHelper.getCurrentLanguage()} onChange={handleChangeLanguage}>
+      children: (<select value={i18nHelper.getCurrentLanguage()} onChange={that.handleChangeLanguage.bind(that)}>
         <option value="en">English</option>
         <option value="zh">中文</option>
       </select>),
@@ -82,4 +95,4 @@ const Header = (props) => {
   
 }
 
-export default Header
+export default translate(['common'])(Header)
