@@ -21,13 +21,6 @@ const activeStyle = {
 }
 
 class Header extends React.Component {
-  static contextTypes = {
-    i18n: PropTypes.any
-  }
-
-  constructor(props,context) {
-    super(props)
-  }
 
   handleChangeLanguage(e){
     i18nHelper.setCurrentLanguage(e.target.value);

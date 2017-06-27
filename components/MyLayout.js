@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Cookies from 'js-cookie'
 import Router from 'next/router'
+import { I18nextProvider } from 'react-i18next'
 
 import Header from './Header'
 import fetch from '../tools/fetch'
@@ -9,7 +10,6 @@ import apiUrls from '../tools/api-urls'
 import i18nHelper from '../tools/i18n-helper'
 import getTranslation from '../tools/get-translation'
 
-import { I18nextProvider } from 'react-i18next'
 
 const layoutStyle = {
   margin: 20,
