@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Layout from '../components/MyLayout.js'
 import fetch from '../tools/fetch'
-import apiUrls from '../tools/api-urls'
 
 class Login extends React.Component {
     
@@ -40,7 +39,7 @@ class Login extends React.Component {
     }
 
     static async getInitialProps({req,res}){
-        return await fetch(apiUrls('/api/auth',req), {}, req, res)
+        return await fetch('/api/auth', {}, req, res)
         .then(r=>r.json())
         .then((user)=>{
             return {loginuser:user}

@@ -24,11 +24,15 @@
     "next-fetch": "^1.0.1",
     "next-i18n-helper": "^1.0.1",
     "next-navigation": "^1.0.1",
+    "next-redux-wrapper": "^1.1.3",
     "next-routes": "^1.0.27",
     "prop-types": "^15.5.10",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-i18next": "^4.1.2",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.1",
+    "redux-thunk": "^2.2.0",
     "spdy": "^3.4.7"
   }
 }

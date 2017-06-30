@@ -4,7 +4,7 @@ import Layout from '../components/MyLayout.js'
 import {Link} from '../tools/routes'
 import i18nHelper from '../tools/i18n-helper'
 
-const translateNS = 'index'
+const translateNS = ['index']
 
 const Index = (props) => {  
   const {t} = props
@@ -25,7 +25,7 @@ const Index = (props) => {
 )}
 
 Index.getInitialProps = function() {
-  return Promise.resolve({translateNS:[translateNS]})
+  return Promise.resolve({translateNS})
 }
 
-export default Layout(translate(['index'])(Index))
+export default Layout(translate(translateNS)(Index))

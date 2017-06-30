@@ -1,4 +1,5 @@
 var data = {}
+var isServerSide = (typeof window ==='undefined')
 
 export default async function get(keyPath, getMethod, options){
   var {parent,finalKey} = getObjectPath(data,keyPath)

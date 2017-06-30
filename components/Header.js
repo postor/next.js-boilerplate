@@ -6,27 +6,18 @@ import getNavigation from 'next-navigation'
 
 import { default as routes, Link } from '../tools/routes'
 import i18nHelper from '../tools/i18n-helper'
+import { getRegister } from '../tools/store/'
 
 const MyNav = getNavigation(routes)
-
-
-const linkStyle = {
-  marginRight: 15
-}
-
-
-const activeStyle = {
-  color: 'red',
-  backgroundColor: '#ddd',
-}
+const translateNS = ['common']
 
 class Header extends React.Component {
 
-  handleChangeLanguage(e){
+  handleChangeLanguage(e) {
     i18nHelper.setCurrentLanguage(e.target.value);
   }
 
-  render(){
+  render() {
     const { url, t } = this.props
 
     var tprops = {
@@ -34,7 +25,7 @@ class Header extends React.Component {
         className: 'mynav',
       },
       links: this.getLinks(t),
-      activeStyle,
+      activeStyle: {},
       activeClassName: 'on',
       url,
     }
@@ -53,30 +44,30 @@ class Header extends React.Component {
     )
   }
 
-  getLinks(t){
+  getLinks(t) {
     var that = this
-    var {user, logout} = this.props
+    var { user, logout } = this.props
     return [{
       linkProps: { route: "index" },
-      children: <a style={linkStyle}>{t('Home')}</a>,
+      children: <a >{t('Home')}</a>,
     }, {
       linkProps: { route: "about" },
-      children: <a style={linkStyle}>{t('About')}</a>,
+      children: <a >{t('About')}</a>,
       activeStyle: { color: 'blue', },
     }, {
       linkProps: { route: "posts" },
-      children: <a style={linkStyle}>{t('Posts')}</a>,
+      children: <a >{t('Posts')}</a>,
       checkIsActive: ({ pathname }) => {
         return ('/post' === pathname) || ('/posts' === pathname)
       }
     },
     (user && user.username) ? {
       nolink: true,
-      children: <a style={linkStyle} onClick={logout}>{t('Logout')}</a>,
+      children: <a onClick={logout}>{t('Logout')}</a>,
     } : {
-      linkProps: { route: "login" },
-      children: <a style={linkStyle}>{t('Login')}</a>,
-    }, {
+        linkProps: { route: "login" },
+        children: <a >{t('Login')}</a>,
+      }, {
       nolink: true,
       children: (<select value={i18nHelper.getCurrentLanguage()} onChange={that.handleChangeLanguage.bind(that)}>
         <option value="en">English</option>
@@ -85,7 +76,9 @@ class Header extends React.Component {
     }]
   }
 
-  
+  static async getInitialProps() {
+    return Promise.resolve({ translateNS })
+  }
 }
 
-export default translate(['common'])(Header)
+export default translate(translateNS)(Header)

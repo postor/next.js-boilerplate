@@ -1,5 +1,4 @@
 import path from 'path'
-import apiUrls from './api-urls'
 import i18nHelper from './i18n-helper'
 import fetch from './fetch'
 import cacheGet from './temp-cache'
@@ -11,25 +10,25 @@ import cacheGet from './temp-cache'
  * @return {i18n}  
  */
 export default async function getTranslation(lang, files, req) {
-  
-  if(!Array.isArray(files)) files = [files]
+
+  if (!Array.isArray(files)) files = [files]
 
   var langData = {}
-  await Promise.all(files.map(async (file)=>{     
-    var getNS1 = ()=>getNS(lang,file,req)
-    var json = await cacheGet(`translations.${lang}.${file}`,getNS1)
+  await Promise.all(files.map(async (file) => {
+    var getNS1 = () => getNS(lang, file, req)
+    var json = await cacheGet(`translations.${lang}.${file}`, getNS1)
     langData[file] = json
-    return true    
+    return true
   }))
-  
+
   return {
     [lang]: langData
   }
 }
 
-async function getNS(lang,ns,req){
+async function getNS(lang, ns, req) {
   const baseUrl = '/static/locales'
-  var r = await fetch(apiUrls(`${baseUrl}/${lang}/${ns}.json`,req),{},req)
+  var r = await fetch(`${baseUrl}/${lang}/${ns}.json`, {}, req)
   var json = await r.json()
   return json
 }
