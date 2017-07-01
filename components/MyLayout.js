@@ -11,6 +11,7 @@ import { default as fetch, getContextedFetch } from '../tools/fetch'
 import i18nHelper from '../tools/i18n-helper'
 import getTranslation from '../tools/get-translation'
 import { initStore, startClock, addCount, serverRenderClock } from '../tools/store'
+import {setJSON} from '../tools/store/json'
 
 export default (Page,mapDispatchToProps) => withRedux(initStore, null, mapDispatchToProps)(class Layout extends React.Component {
   constructor(props) {
@@ -26,13 +27,11 @@ export default (Page,mapDispatchToProps) => withRedux(initStore, null, mapDispat
 
   static async getInitialProps(ctx) {
     var fetch = getContextedFetch(ctx)
-    var [pageProp = {},headerProp = {}] = await Promise.all([
-      Page.getInitialProps ? Page.getInitialProps(ctx) : Promise.resolve({}),
-      Header.getInitialProps(ctx)
-    ])
+    ctx.store.dispatch(setJSON({pathname:ctx.pathname},'url'))
 
+    if(!ctx.isServer) return
     //translation
-    var translateNS = [...pageProp.translateNS||[],...headerProp.translateNS||[]].filter(function (item, pos, self) {
+    var translateNS = [...Page.translateNS||[],...Header.translateNS||[]].filter(function (item, pos, self) {
       return self.indexOf(item) == pos;
     })
 

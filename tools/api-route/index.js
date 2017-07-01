@@ -17,8 +17,10 @@ const user = {
   tempkey: 'tempkey',
 }
 
+router.use(csrfProtection)
+
 //login
-router.post('/auth', csrfProtection, csrfSetHeader, (req, res) => {
+router.post('/auth', csrfSetHeader, (req, res) => {
   if (req.body && req.body.username === user.username && req.body.passwd === user.passwd) {
     res.cookie('user', JSON.stringify(user))
     res.header('custom-set-cookie', res.getHeader('set-cookie'))
@@ -28,17 +30,8 @@ router.post('/auth', csrfProtection, csrfSetHeader, (req, res) => {
   }
 })
 
-
-router.get('/logout', csrfSetHeader, (req, res) => {
-  res.clearCookie('user')
-  res.header('custom-set-cookie', res.getHeader('set-cookie'))
-  res.json({ error: 0 })
-})
-
 //this api acts different after login
-router.get('/auth', csrfProtection, csrfSetHeader, (req, res) => {
-  res.cookie('date', new Date())
-  res.header('custom-set-cookie', res.getHeader('set-cookie'))
+router.get('/auth', csrfSetHeader, (req, res) => {
   var tuser = req.cookies.user
   if (tuser && typeof tuser === 'string') {
     try {
@@ -52,6 +45,13 @@ router.get('/auth', csrfProtection, csrfSetHeader, (req, res) => {
   } else {
     res.json({ error: 'not loged in', tuser })
   }
+})
+
+//logout
+router.get('/logout', csrfSetHeader, (req, res) => {
+  res.clearCookie('user')
+  res.header('custom-set-cookie', res.getHeader('set-cookie'))
+  res.json({ error: 0 })
 })
 
 module.exports = router

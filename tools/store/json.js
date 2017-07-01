@@ -5,16 +5,16 @@ import fetch from '../fetch'
 
 
 export const actionTypes = {
-  FETCH_JSON: 'FETCH_JSON',
+  SET_JSON:'SET_JSON',
 }
 
 
 // REDUCERS
 export const reducer = {
-  [actionTypes.FETCH_JSON]: (state = {}, action) => {
+  [actionTypes.SET_JSON]: (state = {}, action) => {
     var toMerge = pathMerge({},action.path,action.json)
       return update(state, toMerge)
-  }
+  },
 }
 
 // ACTIONS
@@ -23,16 +23,21 @@ export const fetchJSON = (url, path, fetchMethod = fetch, store = false, forceLo
     var r = await fetch(url)
     var json = await r.json()
     return dispatch({
-      type: actionTypes.FETCH_JSON,
+      type: actionTypes.SET_JSON,
       path,
       json,
     })
   }
+  return false
+}
 
-  return dispatch({
-    type: actionTypes.FETCH_NOTHING,
-  })
-
+// ACTIONS
+export const setJSON = (json, path) => {
+  return {
+    type: actionTypes.SET_JSON,
+    path,
+    json,
+  }
 }
 
 
@@ -63,7 +68,7 @@ function pathMerge(obj, pathStr, toMerge) {
     !o[p] && (o[p] = {})
     return o[p]
   }, obj)
-  lastBranch[lastPath] = toMerge
+  lastBranch[lastPath] = {$set:toMerge}
   return obj
 }
 

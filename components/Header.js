@@ -3,13 +3,12 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types'
 import getNavigation from 'next-navigation'
+import { connect } from 'react-redux'
 
 import { default as routes, Link } from '../tools/routes'
 import i18nHelper from '../tools/i18n-helper'
-import { getRegister } from '../tools/store/'
 
 const MyNav = getNavigation(routes)
-const translateNS = ['common']
 
 class Header extends React.Component {
 
@@ -76,9 +75,7 @@ class Header extends React.Component {
     }]
   }
 
-  static async getInitialProps() {
-    return Promise.resolve({ translateNS })
-  }
+  static translateNS = ['common']
 }
 
-export default translate(translateNS)(Header)
+export default connect(state => ({ url: state.url }))(translate(Header.translateNS)(Header))
