@@ -17,10 +17,10 @@ const user = {
   tempkey: 'tempkey',
 }
 
-router.use(csrfProtection)
+router.use([csrfProtection, csrfSetHeader])
 
 //login
-router.post('/auth', csrfSetHeader, (req, res) => {
+router.post('/auth', (req, res) => {
   if (req.body && req.body.username === user.username && req.body.passwd === user.passwd) {
     res.cookie('user', JSON.stringify(user))
     res.header('custom-set-cookie', res.getHeader('set-cookie'))
@@ -31,7 +31,7 @@ router.post('/auth', csrfSetHeader, (req, res) => {
 })
 
 //this api acts different after login
-router.get('/auth', csrfSetHeader, (req, res) => {
+router.get('/auth', (req, res) => {
   var tuser = req.cookies.user
   if (tuser && typeof tuser === 'string') {
     try {
@@ -48,7 +48,7 @@ router.get('/auth', csrfSetHeader, (req, res) => {
 })
 
 //logout
-router.get('/logout', csrfSetHeader, (req, res) => {
+router.get('/logout', (req, res) => {
   res.clearCookie('user')
   res.header('custom-set-cookie', res.getHeader('set-cookie'))
   res.json({ error: 0 })

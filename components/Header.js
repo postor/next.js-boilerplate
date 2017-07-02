@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 
 import { default as routes, Link } from '../tools/routes'
 import i18nHelper from '../tools/i18n-helper'
+import { getUser, logout} from '../tools/store/user'
+import { getContextedFetch } from '../tools/fetch'
 
 const MyNav = getNavigation(routes)
 
@@ -16,8 +18,13 @@ class Header extends React.Component {
     i18nHelper.setCurrentLanguage(e.target.value);
   }
 
+  handleLogout(){
+    var {dispatch} = this.props
+    dispatch(logout())
+  }
+
   render() {
-    const { url, t } = this.props
+    const { url, t, user } = this.props
 
     var tprops = {
       ulProps: {
@@ -30,6 +37,7 @@ class Header extends React.Component {
     }
     return (<div className="nav-wrap">
       <MyNav {...tprops} />
+      <p>{JSON.stringify(user)}</p>
       <style jsx>{`
           .nav-wrap :global(.mynav) {
             border: 1px solid black;
@@ -45,7 +53,7 @@ class Header extends React.Component {
 
   getLinks(t) {
     var that = this
-    var { user, logout } = this.props
+    var { user, dispatch} = this.props
     return [{
       linkProps: { route: "index" },
       children: <a >{t('Home')}</a>,
@@ -62,7 +70,7 @@ class Header extends React.Component {
     },
     (user && user.username) ? {
       nolink: true,
-      children: <a onClick={logout}>{t('Logout')}</a>,
+      children: <a onClick={this.handleLogout.bind(this)}>{t('Logout')}</a>,
     } : {
         linkProps: { route: "login" },
         children: <a >{t('Login')}</a>,
@@ -75,7 +83,17 @@ class Header extends React.Component {
     }]
   }
 
+
+
   static translateNS = ['common']
+  static async getInitialProps(ctx) {
+    const { store } = ctx
+    return await store.dispatch(getUser(getContextedFetch(ctx),store))
+    .catch((e)=>{
+      console.log('store.dispatch(getUser(fetch)) failed')
+      console.log(e)
+    })
+  }
 }
 
-export default connect(state => ({ url: state.url }))(translate(Header.translateNS)(Header))
+export default connect(state => state)(translate(Header.translateNS)(Header))

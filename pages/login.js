@@ -1,52 +1,43 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import Layout from '../components/MyLayout.js'
+import { connect } from 'react-redux'
+
+import Layout from '../components/Layout.js'
 import fetch from '../tools/fetch'
+import wrapper from '../tools/wrapper'
+import { getUser, login} from '../tools/store/user'
 
 class Login extends React.Component {
-    
-    static propTypes = {
-        user: PropTypes.object.isRequired,
-        login: PropTypes.func.isRequired,
+  render() {
+    const {user} = this.props
+    if(user && user.username){
+      return <div>
+        <h1>Login</h1>
+        <p>you already login</p>
+        <p>{user.username}</p>
+      </div>
     }
+    return <div>
+      <h1>Login</h1>
+      <hr />
+      <label>username:</label>
+      <input id="username" name="username" ref="username" />
+      <br />
+      <label>password:</label>
+      <input id="passwd" name="passwd" type="password" ref="passwd" />
+      <hr />
+      <button onClick={this.handleLogin.bind(this)}>submit</button>
+      <p>use test:123456 to login</p>
+    </div>
+  }
 
-    render() {
-        const {user} = this.props
-        if(user && !user.isGuest){
-            return <div>
-                <h1>Login</h1>
-                <p>you already login</p>
-                <p>{user.username}</p>
-
-            </div>
-        }
-        return <div>
-            <h1>Login</h1>
-            <hr />
-            <label>username:</label>
-            <input id="username" name="username" ref="username" />
-            <br />
-            <label>password:</label>
-            <input id="passwd" name="passwd" type="password" ref="passwd" />
-            <hr />
-            <button onClick={this.handleLogin.bind(this)}>submit</button>
-            <p>use test:123456 to login</p>
-        </div>
-    }
-
-    handleLogin(){
-        this.props.login(this.refs.username.value, this.refs.passwd.value)
-    }
-
-    static async getInitialProps({req,res}){
-        return await fetch('/api/auth', {}, req, res)
-        .then(r=>r.json())
-        .then((user)=>{
-            return {loginuser:user}
-        })
-    }
+  handleLogin(){
+    const {dispatch} = this.props
+    dispatch(login(this.refs.username.value, this.refs.passwd.value))
+    .catch((e)=>{
+        alert('登录失败:'+e)
+        console.log(e)
+    })
+  }
 }
 
-
-
-export default Layout(Login)
+export default wrapper(Layout(connect(state =>state)(Login)))

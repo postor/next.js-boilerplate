@@ -1,12 +1,13 @@
 import { bindActionCreators } from 'redux'
 import fetch from '../fetch'
+import { fetchJSON } from './json'
 
 export const actionTypes = {
   login: 'login',
   logout: 'logout',
 }
 
-export const reducers = {
+export const reducer = {
   [actionTypes.login]: loginReducer,
   [actionTypes.logout]: logoutReducer,
 }
@@ -34,11 +35,10 @@ export const login = (username, passwd) => dispatch => {
       return user
     })
     .then((user) => {
-      dispatch({
+      return dispatch({
         type: actionTypes.login,
         user
       })
-      return true
     })
 }
 
@@ -53,27 +53,19 @@ export const logout = () => dispatch => {
       if (result.error) {
         return Promise.reject(user.error)
       }
-      return true
+      return dispatch({
+        type: actionTypes.logout
+      })
     })
 }
 
-/**
- * 用于注册到
- * @param {*} dispatch 
- */
-export const getRegister = (lastRegister)=> (dispatch) => {
-  return {
-    ...lastRegister?lastRegister(dispatch):{},
-    login: bindActionCreators(login, dispatch),
-    logout: bindActionCreators(logout, dispatch)
-  }
-}
-
+export const getUser = (contextFetch, store) => fetchJSON('/api/auth', 'user', contextFetch, store)
 
 
 // reducer
 function loginReducer(state = {}, action) {
   var user = Object.assign(action.user, { isGuest: false })
+  console.log(Object.assign(state, { user }))
   return Object.assign(state, { user })
 }
 

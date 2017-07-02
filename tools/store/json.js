@@ -12,15 +12,17 @@ export const actionTypes = {
 // REDUCERS
 export const reducer = {
   [actionTypes.SET_JSON]: (state = {}, action) => {
+    if(!action.path) return action.json
+    
     var toMerge = pathMerge({},action.path,action.json)
       return update(state, toMerge)
   },
 }
 
 // ACTIONS
-export const fetchJSON = (url, path, fetchMethod = fetch, store = false, forceLoad = false) => async dispatch => {
+export const fetchJSON = (url, path, fetchMethod = fetch, store = false, forceLoad = false) => async (dispatch) => {
   if(forceLoad || checkNeedLoad(store, path)){    
-    var r = await fetch(url)
+    var r = await fetchMethod(url)
     var json = await r.json()
     return dispatch({
       type: actionTypes.SET_JSON,
@@ -37,18 +39,6 @@ export const setJSON = (json, path) => {
     type: actionTypes.SET_JSON,
     path,
     json,
-  }
-}
-
-
-/**
- * 用于注册到
- * @param {*} dispatch 
- */
-export const getRegister = (lastRegister)=> (dispatch) => {
-  return {
-    ...lastRegister?lastRegister(dispatch):{},
-    fetchJSON: bindActionCreators(fetchJSON, dispatch),
   }
 }
 
@@ -76,10 +66,10 @@ function pathMerge(obj, pathStr, toMerge) {
  * 检查对象路径是否存在
  *  
  * @param {any} obj 
- * @param {any} path 
+ * @param {any} pathStr 
  * @returns 
  */
-function pathExists(obj,path){
+function pathExists(obj,pathStr){
   const pathArr = pathStr.split('.')
   var tmp = obj
   return pathArr.every((p) => {
