@@ -65,13 +65,12 @@ export const getUser = (contextFetch, store) => fetchJSON('/api/auth', 'user', c
 // reducer
 function loginReducer(state = {}, action) {
   var user = Object.assign(action.user, { isGuest: false })
-  console.log(Object.assign(state, { user }))
-  return Object.assign(state, { user })
+  return Object.assign({}, state, { user })
 }
 
 
 
 // reducer
 function logoutReducer(state = {}, action) {
-  return Object.assign(state, { user: { isGuest: true } })
+  return Object.assign({}, state, { user: { isGuest: true } })
 }

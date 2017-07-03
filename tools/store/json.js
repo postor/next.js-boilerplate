@@ -5,23 +5,23 @@ import fetch from '../fetch'
 
 
 export const actionTypes = {
-  SET_JSON:'SET_JSON',
+  SET_JSON: 'SET_JSON',
 }
 
 
 // REDUCERS
 export const reducer = {
   [actionTypes.SET_JSON]: (state = {}, action) => {
-    if(!action.path) return action.json
-    
-    var toMerge = pathMerge({},action.path,action.json)
-      return update(state, toMerge)
+    if (!action.path) return action.json
+
+    var toMerge = pathMerge({}, action.path, action.json)
+    return update(state, toMerge)
   },
 }
 
 // ACTIONS
 export const fetchJSON = (url, path, fetchMethod = fetch, store = false, forceLoad = false) => async (dispatch) => {
-  if(forceLoad || checkNeedLoad(store, path)){    
+  if (forceLoad || checkNeedLoad(store, path)) {
     var r = await fetchMethod(url)
     var json = await r.json()
     return dispatch({
@@ -58,7 +58,7 @@ function pathMerge(obj, pathStr, toMerge) {
     !o[p] && (o[p] = {})
     return o[p]
   }, obj)
-  lastBranch[lastPath] = {$set:toMerge}
+  lastBranch[lastPath] = { $set: toMerge }
   return obj
 }
 
@@ -69,11 +69,11 @@ function pathMerge(obj, pathStr, toMerge) {
  * @param {any} pathStr 
  * @returns 
  */
-function pathExists(obj,pathStr){
+function pathExists(obj, pathStr) {
   const pathArr = pathStr.split('.')
   var tmp = obj
   return pathArr.every((p) => {
-    if(typeof tmp[p] === 'undefined') return false
+    if (typeof tmp[p] === 'undefined') return false
     tmp = tmp[p]
     return true
   })
@@ -87,8 +87,8 @@ function pathExists(obj,pathStr){
  * @returns 
  */
 function checkNeedLoad(store, path) {
-  if (!store) return true  
+  if (!store) return true
   const state = store.getState()
-  return !pathExists(state,path)
+  return !pathExists(state, path)
 
 }

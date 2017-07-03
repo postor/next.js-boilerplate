@@ -17,7 +17,7 @@ const user = {
   tempkey: 'tempkey',
 }
 
-router.use([csrfProtection, csrfSetHeader])
+router.use(csrfProtection, csrfSetHeader)
 
 //login
 router.post('/auth', (req, res) => {
