@@ -17,7 +17,7 @@ export default (Page) => withRedux(initStore)(class Wrapper extends React.Compon
     super(props)
     const { dispatch, translations, url, storeState } = props
     this.i18n = i18nHelper.getI18n(translations)
-    dispatch(setJSON(storeState))
+    storeState && dispatch(setJSON(storeState))
     dispatch(setJSON(url, 'url'))
   }
 
