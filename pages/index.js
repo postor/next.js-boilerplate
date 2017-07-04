@@ -2,7 +2,6 @@
 import { translate } from 'react-i18next'
 import Layout from '../components/Layout.js'
 import { Link } from '../tools/routes'
-import wrapper from '../tools/wrapper'
 
 const translateNS = ['index']
 
@@ -27,4 +26,4 @@ const Index = (props) => {
 
 Index.translateNS = translateNS
 
-export default wrapper(Layout(translate(translateNS)(Index)))
+export default Layout(translate(translateNS)(Index))

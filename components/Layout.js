@@ -1,11 +1,12 @@
 import React from 'react'
 import Header from './Header'
+import wrapper from '../tools/wrapper'
 
-const layout = (Page) => class Layout extends React.Component {
+const layout = (Page) => wrapper(class Layout extends React.Component {
   render() {
     return (<div className="wrapper">
       <Header />
-      <Page />
+      <Page {...this.props}/>
     </div>)
   }
   static translateNS = [...Header.translateNS, ...Page.translateNS || []]
@@ -15,7 +16,6 @@ const layout = (Page) => class Layout extends React.Component {
       Page.getInitialProps ? Page.getInitialProps(ctx) : Promise.resolve(true),
     ])
   }
-}
-
+})
 
 export default layout

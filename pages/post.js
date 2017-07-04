@@ -1,5 +1,4 @@
 import Layout from '../components/Layout.js'
-import wrapper from '../tools/wrapper'
 
 const Post = (props) => (
     <div>
@@ -9,4 +8,4 @@ const Post = (props) => (
     </div>
 )
 
-export default wrapper(Layout(Post))
+export default Layout(Post)

@@ -1,6 +1,5 @@
 import Layout from '../components/Layout.js'
 import { Link } from '../tools/routes'
-import wrapper from '../tools/wrapper'
 
 const PostLink = (props) => (
   <li>
@@ -21,4 +20,4 @@ const Posts = () => (
   </div>
 )
 
-export default wrapper(Layout(Posts))
+export default Layout(Posts)

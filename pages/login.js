@@ -2,14 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Layout from '../components/Layout.js'
-import fetch from '../tools/fetch'
-import wrapper from '../tools/wrapper'
-import { getUser, login} from '../tools/store/user'
+import { getUser, login } from '../tools/store/user'
 
 class Login extends React.Component {
   render() {
-    const {user} = this.props
-    if(user && user.username){
+    const { user } = this.props
+    if (user && user.username) {
       return <div>
         <h1>Login</h1>
         <p>you already login</p>
@@ -30,14 +28,14 @@ class Login extends React.Component {
     </div>
   }
 
-  handleLogin(){
-    const {dispatch} = this.props
+  handleLogin() {
+    const { dispatch } = this.props
     dispatch(login(this.refs.username.value, this.refs.passwd.value))
-    .catch((e)=>{
-        alert('登录失败:'+e)
+      .catch((e) => {
+        alert('登录失败:' + e)
         console.log(e)
-    })
+      })
   }
 }
 
-export default wrapper(Layout(connect(state =>state)(Login)))
+export default Layout(connect(state => state)(Login))
