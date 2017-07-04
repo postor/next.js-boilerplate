@@ -1,4 +1,4 @@
-import update from 'react/lib/update'
+import update from 'react-addons-update'
 import { bindActionCreators } from 'redux'
 
 import fetch from '../fetch'

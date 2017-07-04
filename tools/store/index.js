@@ -1,27 +1,21 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import {reducer as json} from './json'
-import {reducer as user} from './user'
-
-const isServer = (typeof window ==='undefined')
+import reduxHelper from 'next.js-redux-helper'
+import wrapper from 'next.js-redux-helper/dest/wrapper'
+import { reducer as json } from './json'
+import { reducer as user } from './user'
 
 const reducers = {
   ...json,
   ...user,
 }
 
-// REDUCERS
-export const reducer = (state = {}, action) => {
-  if (reducers[action.type]) return reducers[action.type](state, action)
-  console.log('unhandled action:'+JSON.stringify(action))
-  return state
+var initialState = {}
+if (typeof window != 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__) {
+  initialState = window.__REDUX_DEVTOOLS_EXTENSION__()
 }
+/**
+ * get initStore function
+ */
+const initStore = reduxHelper(reducers, initialState)
+export default initStore
 
-
-// init
-export const initStore = (initialState = {}) => {
-  if(!isServer){
-    initialState = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  }
-  return createStore(reducer, initialState, applyMiddleware(thunkMiddleware))
-}
+export const reduxWrapper = wrapper(initStore)
