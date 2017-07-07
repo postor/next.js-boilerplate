@@ -1,4 +1,3 @@
-import update from 'react-addons-update'
 import { bindActionCreators } from 'redux'
 
 import fetch from '../fetch'
@@ -14,8 +13,7 @@ export const reducer = {
   [actionTypes.SET_JSON]: (state = {}, action) => {
     if (!action.path) return action.json
 
-    var toMerge = pathMerge({}, action.path, action.json)
-    return update(state, toMerge)
+    return pathMerge(Object.assign({}, state), action.path, action.json)
   },
 }
 
@@ -42,6 +40,17 @@ export const setJSON = (json, path) => {
   }
 }
 
+// helpers
+export function getPath(obj, pathStr) {
+  const pathArr = pathStr.split('.')
+  var tmp = obj
+  return pathArr.reduce((tmp, p) => {
+    if(tmp === null) return null
+    if (typeof tmp[p] === 'undefined') return null
+    return tmp[p]
+  }, obj)
+}
+
 
 /**
  * 按路径合入数据 
@@ -56,9 +65,10 @@ function pathMerge(obj, pathStr, toMerge) {
   const lastPath = pathArr.pop()
   const lastBranch = pathArr.reduce((o, p) => {
     !o[p] && (o[p] = {})
+    o[p] = {...o[p]}
     return o[p]
   }, obj)
-  lastBranch[lastPath] = { $set: toMerge }
+  lastBranch[lastPath] = toMerge
   return obj
 }
 
