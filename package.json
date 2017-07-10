@@ -33,5 +33,10 @@
     "react-i18next": "^4.1.2",
     "react-redux": "^5.0.5",
     "spdy": "^3.4.7"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.4",
+    "jshint": "^2.9.5"
   }
 }
