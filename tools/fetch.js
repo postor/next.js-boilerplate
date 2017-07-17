@@ -24,7 +24,6 @@ export default function fetch(url,option,req,res){
  */
 export function getContextedFetch({ req, res }) {
   return ((req, res, url, option) => {
-    console.log(['req:'+typeof req,'window:'+typeof window])
     return fetch(url, option, req, res)
   }).bind(null, req, res)
 }

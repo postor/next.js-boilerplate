@@ -1,7 +1,6 @@
 const express = require('express')
 const next = require('next')
 const spdy = require('spdy')
-const path = require('path')
 const fs = require('fs')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')

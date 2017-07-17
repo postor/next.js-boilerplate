@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "gulp",
     "dev": "node server.js",
     "build": "next build",
     "start": "cross-env NODE_ENV=production node server.js"
@@ -35,8 +36,9 @@
     "spdy": "^3.4.7"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint-plugin-react": "^7.1.0",
     "gulp": "^3.9.1",
-    "gulp-jshint": "^2.0.4",
-    "jshint": "^2.9.5"
+    "gulp-eslint": "^4.0.0"
   }
 }

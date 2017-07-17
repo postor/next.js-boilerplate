@@ -1,6 +1,6 @@
 import Layout from '../components/Layout.js'
 
-const About = (props) => (
+const About = () => (
     <div>
         <p>This is the about page</p>
     </div>

@@ -1,11 +1,10 @@
 
-import React from 'react';
-import { translate } from 'react-i18next';
-import PropTypes from 'prop-types'
+import React from 'react'
+import { translate } from 'react-i18next'
 import getNavigation from 'next-navigation'
 import { connect } from 'react-redux'
 
-import { default as routes, Link } from '../tools/routes'
+import { default as routes } from '../tools/routes'
 import i18nHelper from '../tools/i18n-helper'
 import { getUser, logout} from '../tools/store/user'
 import { getContextedFetch } from '../tools/fetch'
@@ -15,7 +14,7 @@ const MyNav = getNavigation(routes)
 class Header extends React.Component {
 
   handleChangeLanguage(e) {
-    i18nHelper.setCurrentLanguage(e.target.value);
+    i18nHelper.setCurrentLanguage(e.target.value)
   }
 
   handleLogout(){
@@ -53,7 +52,7 @@ class Header extends React.Component {
 
   getLinks(t) {
     var that = this
-    var { user, dispatch} = this.props
+    var { user} = this.props
     return [{
       linkProps: { route: "index" },
       children: <a >{t('Home')}</a>,
@@ -89,9 +88,7 @@ class Header extends React.Component {
   static async getInitialProps(ctx) {
     const { store } = ctx
     return await store.dispatch(getUser(getContextedFetch(ctx),store))
-    .catch((e)=>{
-      console.log('store.dispatch(getUser(fetch)) failed')
-      console.log(e)
+    .catch(()=>{
     })
   }
 }

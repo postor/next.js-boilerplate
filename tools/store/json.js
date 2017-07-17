@@ -1,7 +1,4 @@
-import { bindActionCreators } from 'redux'
-
 import fetch from '../fetch'
-
 
 export const actionTypes = {
   SET_JSON: 'SET_JSON',
@@ -43,7 +40,6 @@ export const setJSON = (json, path) => {
 // helpers
 export function getPath(obj, pathStr) {
   const pathArr = pathStr.split('.')
-  var tmp = obj
   return pathArr.reduce((tmp, p) => {
     if(tmp === null) return null
     if (typeof tmp[p] === 'undefined') return null

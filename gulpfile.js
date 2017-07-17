@@ -1,5 +1,5 @@
-const jshint = require('gulp-jshint');
-const gulp = require('gulp');
+const gulp = require('gulp')
+const eslint = require('gulp-eslint')
 
 gulp.task('lint-es6', function () {
   return gulp.src([
@@ -8,13 +8,12 @@ gulp.task('lint-es6', function () {
     '!.next/**/*.js',
     '!server.js',
     '!tools/routes.js',
+    '!gulpfile.js',
   ])
-    .pipe(jshint({
-      "esversion": 6,
-      "asi": true,
-    }))
-    .pipe(jshint.reporter('default'));
-});
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
+})
 
 gulp.task('lint-node', function () {
   return gulp.src([
@@ -22,11 +21,18 @@ gulp.task('lint-node', function () {
     'tools/routes.js',
     'tools/api-route/index.js',
   ])
-    .pipe(jshint({
-      "esversion": 6,
-      "asi": true,
+    .pipe(eslint({
+      "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+      },
+      "extends": "eslint:recommended"
     }))
-    .pipe(jshint.reporter('default'));
-});
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
+})
 
-gulp.task('default', ['lint-es6', 'lint-node'])
+gulp.task('default', [
+  'lint-es6', 
+  'lint-node'
+])

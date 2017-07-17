@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux'
 import fetch from '../fetch'
 import { fetchJSON } from './json'
 
@@ -51,7 +50,7 @@ export const logout = () => dispatch => {
     .then(r => r.json())
     .then((result) => {
       if (result.error) {
-        return Promise.reject(user.error)
+        return Promise.reject(result.error)
       }
       return dispatch({
         type: actionTypes.logout
@@ -71,6 +70,6 @@ function loginReducer(state = {}, action) {
 
 
 // reducer
-function logoutReducer(state = {}, action) {
+function logoutReducer(state = {}) {
   return Object.assign({}, state, { user: { isGuest: true } })
 }
