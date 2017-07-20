@@ -1,6 +1,6 @@
 # nextjs-boilerplate
 
-demo:  https://hello-next-lhafgwnfxp.now.sh/
+demo:  http://nextjs.i18ntech.com/
 
 包含内容 include:
 
