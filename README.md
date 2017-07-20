@@ -1,6 +1,6 @@
 # nextjs-boilerplate
 
-demo:  http://nextjs.i18ntech.com/ （with bootstrap https://github.com/nextjs-boilerplate/bootstrap）
+demo:  http://nextjs.i18ntech.com/ （with bootstrap https://github.com/nextjs-boilerplate/bootstrap ）
 
 包含内容 include:
 
