@@ -21,7 +21,7 @@
     "js-cookie": "^2.1.4",
     "next": "^2.1.1",
     "next-fetch": "^1.0.1",
-    "next-i18n-helper": "^1.0.17",
+    "next-i18n-helper": "^1.0.19",
     "next-navigation": "^1.0.1",
     "next-routes": "^1.0.27",
     "next.js-redux-helper": "^1.0.4",
