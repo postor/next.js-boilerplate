@@ -19,7 +19,7 @@
     "csurf": "^1.9.0",
     "express": "^4.15.2",
     "js-cookie": "^2.1.4",
-    "next": "^3.2.1",
+    "next": "^4.2.3",
     "next-fetch": "^1.0.1",
     "next-i18n-helper": "^1.0.19",
     "next-navigation": "^1.0.1",
