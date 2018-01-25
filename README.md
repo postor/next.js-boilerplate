@@ -24,6 +24,10 @@ demo:  http://nextjs.i18ntech.com/ （with bootstrap https://github.com/nextjs-
 - http2 support, better performance
 - cookie pass through, better security, cookie handle for server side rendering 
 
+如果需要一个轻量的版本，可以参考 https://github.com/nextjs-boilerplate/next-express-redux-i18n 
+
+if you want something more clean, refer https://github.com/nextjs-boilerplate/next-express-redux-i18n 
+
 ## 为什么要做这个项目 Why need this project?
 
 多国语言和reudx，这东西在React上应该是标配了，我们却还总是需要去单独集成他们，eslint代码规范也是很必要的，还有新潮一点的http2
