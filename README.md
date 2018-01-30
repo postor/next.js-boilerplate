@@ -24,9 +24,9 @@ demo:  http://nextjs.i18ntech.com/ （with bootstrap https://github.com/nextjs-
 - http2 support, better performance
 - cookie pass through, better security, cookie handle for server side rendering 
 
-如果需要一个轻量的版本，可以参考 https://github.com/nextjs-boilerplate/next-express-redux-i18n 
+如果需要一个jwt的版本，可以参考 https://github.com/nextjs-boilerplate/next-express-redux-i18n 
 
-if you want something more clean, refer https://github.com/nextjs-boilerplate/next-express-redux-i18n 
+if you want jwt version, refer https://github.com/nextjs-boilerplate/next-express-redux-i18n 
 
 ## 为什么要做这个项目 Why need this project?
 
