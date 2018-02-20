@@ -4,3 +4,4 @@ yarn.lock
 /npm-debug.log
 /.vscode
 /yarn-error.log
+/tests/__tests__/pages/__image_snapshots__
