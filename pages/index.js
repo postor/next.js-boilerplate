@@ -1,4 +1,5 @@
 
+import Head from 'next/head'
 import { translate } from 'react-i18next'
 import Layout from '../components/Layout.js'
 import { Link } from '../tools/routes'
@@ -8,6 +9,9 @@ const translateNS = ['index']
 const Index = (props) => {
   const { t } = props
   return (<div>
+    <Head>
+      <title>{t('common:Home')}</title>
+    </Head>
     <h1>{t('My Blog')}</h1>
     <p>
       <Link route='posts'>
