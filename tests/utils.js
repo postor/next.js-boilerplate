@@ -90,7 +90,7 @@ export const launch = async (testName) => {
   const differencify = new Differencify()
   const target = differencify.init({ testName, chain: false });
   const browser = await target.launch({
-    executablePath,
+    //executablePath,
     //devtools : true,
   })
   return { browser, target, differencify }

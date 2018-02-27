@@ -36,6 +36,7 @@ app.prepare()
   server.listen(80, (err) => {
     if (err) throw err
     console.log('> Ready http on http://localhost')
+    process.send && process.send('http ready')
   })
 
   //http2
