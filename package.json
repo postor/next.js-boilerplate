@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "certbot-express": "^1.0.2",
     "cookie-parser": "^1.4.3",
     "csurf": "^1.9.0",
     "express": "^4.15.2",
@@ -30,8 +31,7 @@
     "react-addons-update": "^15.6.0",
     "react-dom": "^16.2.0",
     "react-i18next": "^4.1.2",
-    "react-redux": "^5.0.5",
-    "spdy": "^3.4.7"
+    "react-redux": "^5.0.5"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

@@ -41,7 +41,7 @@ export const setJSON = (json, path) => {
 export function getPath(obj, pathStr) {
   const pathArr = pathStr.split('.')
   return pathArr.reduce((tmp, p) => {
-    if(tmp === null) return null
+    if (tmp === null) return null
     if (typeof tmp[p] === 'undefined') return null
     return tmp[p]
   }, obj)
@@ -61,7 +61,7 @@ function pathMerge(obj, pathStr, toMerge) {
   const lastPath = pathArr.pop()
   const lastBranch = pathArr.reduce((o, p) => {
     !o[p] && (o[p] = {})
-    o[p] = {...o[p]}
+    o[p] = { ...o[p] }
     return o[p]
   }, obj)
   lastBranch[lastPath] = toMerge

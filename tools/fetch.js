@@ -11,7 +11,7 @@ const cookieFetch = getFetch()
  * @param {any} res 
  * @returns 
  */
-export default function fetch(url,option,req,res){
+export default function fetch(url, option, req, res) {
   return cookieFetch(apiUrls(url, req), option, req, res)
 }
 
