@@ -1,10 +1,13 @@
-import Differencify from 'differencify'
-import devicesPreset from 'puppeteer/DeviceDescriptors'
+const { join } = require('path')
+
+const Differencify  = require('differencify').default
+const devicesPreset = require('puppeteer/DeviceDescriptors')
+const { exists } = require('fs-extra') 
 
 const iPhone = devicesPreset['iPhone 6']
 const iPad = devicesPreset['iPad']
 
-export const browserLangs = [
+module.exports.browserLangs = [
   {
     evaluate: () => {
       Object.defineProperty(navigator, "languages", {
@@ -42,7 +45,7 @@ export const browserLangs = [
   },
 ]
 
-export const cookieLangs = [
+module.exports.cookieLangs = [
   {
     lang: '',
     cookies: []
@@ -67,7 +70,7 @@ export const cookieLangs = [
   }
 ]
 
-export const devices = [
+module.exports.devices = [
   {
     name: 'iphone',
     emulate: iPhone
@@ -84,14 +87,11 @@ export const devices = [
   },
 ]
 
-export const executablePath = `C:\\Users\\josh\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe`
-
-export const launch = async (testName) => {
+module.exports.launch = async (testName) => {
   const differencify = new Differencify()
-  const target = differencify.init({ testName, chain: false });
-  const browser = await target.launch({
-    executablePath, //if you use chrome or chrome canary
-    //devtools : true,
-  })
+  const target = differencify.init({ testName, chain: false })
+  const configExists = await exists(join(__dirname,'launch.json')) 
+  const launchConfig = configExists?require('./launch'):{}
+  const browser = await target.launch(launchConfig)
   return { browser, target, differencify }
 }

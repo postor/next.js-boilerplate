@@ -40,7 +40,7 @@ gulp.task('default', [
 
 gulp.task('test', function () {
   return new Promise((resolve, reject) => {
-    exec('yarn.cmd build', { maxBuffer: 1024 * 1024 }, (err) => {
+    exec('npm.cmd run build', { maxBuffer: 1024 * 1024 }, (err) => {
       if (err) {
         console.log(err)
         reject(err)
@@ -51,11 +51,28 @@ gulp.task('test', function () {
       const server = fork('./server.js', { env, maxBuffer: 1024 * 1024 })
       server.on('message', (m) => {
         if (m === 'http ready') {
-          execSync('yarn.cmd jest', { maxBuffer: 1024 * 1024, stdio: [0, 1, 2] })
+          execSync('npm.cmd run jest', { maxBuffer: 1024 * 1024, stdio: [0, 1, 2] })
           server.kill()
           resolve()
         }
       })
+    })
+  })
+});
+
+gulp.task('test-docker', function () {
+  return new Promise((resolve, reject) => {
+    const server = fork('./server.js', { env, maxBuffer: 1024 * 1024 })
+    server.on('message', (m) => {
+      if (m === 'http ready') {
+        exec('npm run jest', { maxBuffer: 1024 * 1024 }, (error, stdout) => {
+          if (error) {
+            throw error
+          }
+          console.log(stdout)
+          resolve()
+        })
+      }
     })
   })
 });
