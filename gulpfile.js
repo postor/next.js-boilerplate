@@ -47,7 +47,7 @@ gulp.task('test', function () {
         return
       }
       var env = Object.create(process.env)
-      env.NODE_ENV = 'test'
+      env.NODE_ENV = 'production'
       const server = fork('./server.js', { env, maxBuffer: 1024 * 1024 })
       server.on('message', (m) => {
         if (m === 'http ready') {
@@ -62,9 +62,7 @@ gulp.task('test', function () {
 
 gulp.task('test-docker', function () {
   return new Promise((resolve, reject) => {
-    var env = Object.create(process.env)
-    env.NODE_ENV = 'test'
-    const server = fork('./server.js', { env, maxBuffer: 1024 * 1024 })
+    const server = fork('./server.js', { maxBuffer: 1024 * 1024 })
     server.on('message', (m) => {
       if (m === 'http ready') {
         exec('npm run jest', { maxBuffer: 1024 * 1024 }, (error, stdout) => {
@@ -72,6 +70,7 @@ gulp.task('test-docker', function () {
             throw error
           }
           console.log(stdout)
+          server.kill()
           resolve()
         })
       }

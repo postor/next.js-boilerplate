@@ -2,10 +2,10 @@ import { browserLangs, cookieLangs, devices, launch } from '../../utils'
 
 describe('index-function', () => {
   const enBrowser = browserLangs.find((x) => x.lang = 'en')
-  let browsers = []
+  let lastBrowser
   it('change-language', async () => {
     const { browser, differencify } = await launch()
-    browsers.push(browser)
+    lastBrowser = browser
     const page = await browser.newPage()
     await page.evaluateOnNewDocument(enBrowser.evaluate)
     await page.setExtraHTTPHeaders(enBrowser.headers)
@@ -23,8 +23,5 @@ describe('index-function', () => {
     await browser.close()
     await differencify.cleanup()
   }, 60000)
-  
-  afterAll(() => {
-    browsers.forEach((x) => x.close())
-  })
+  afterEach(() => lastBrowser.close())
 });

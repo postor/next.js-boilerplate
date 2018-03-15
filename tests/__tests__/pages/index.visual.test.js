@@ -3,14 +3,14 @@ import { inspect } from 'util'
 
 describe('index-differencify', () => {
   let done = false
-  let browsers = []
+  let lastBrowser
   devices.forEach((device) => {
     browserLangs.forEach((browserLang) => {
       cookieLangs.forEach((cookieLang) => {
         const d = `${device.name}-browser-${browserLang.lang}-cookie-${cookieLang.lang}`
         it(d, async () => {
           const { browser, target, differencify } = await launch(d)
-          browsers.push(browser)
+          lastBrowser = browser
           const page = await browser.newPage()
           await page.emulate(device.emulate)
           await page.setCookie(...cookieLang.cookies)
@@ -27,7 +27,5 @@ describe('index-differencify', () => {
       })
     })
   })
-  afterAll(() => {
-    browsers.forEach((x) => x.close())
-  })
+  afterEach(() => lastBrowser.close())
 });

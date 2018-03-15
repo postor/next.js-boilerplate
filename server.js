@@ -8,8 +8,8 @@ const { redirect, http2 } = require('certbot-express')
 const apiRoute = require('./tools/api-route')
 
 const dev = process.env.NODE_ENV !== 'production'
-const test = process.env.NODE_ENV == 'test'
-const app = next({ dev: test ? false : dev })
+const http2Enabled = process.env.HTTP2_ENABLED
+const app = next({ dev })
 
 
 //routes
@@ -21,10 +21,10 @@ app.prepare()
     const server = express()
 
     //static
-    server.use('/static', express.static('static'))
+    server.use('/', express.static('static'))
 
     //redirect to http2, dev do nothing
-    !dev && server.use(redirect)
+    http2Enabled && server.use(redirect)
 
     //cookie
     server.use(bodyParser.urlencoded({ extended: true }))
@@ -39,7 +39,7 @@ app.prepare()
 
     //http && http2
     return http2({
-      dev: test ? true : dev,  // only http for dev
+      dev: !http2Enabled,  // only http for dev
       app: server,
       keyPath: '/etc/letsencrypt/live/test.i18ntech.com/privkey.pem',    //free cert refer https://github.com/postor/certbot-express
       certPath: '/etc/letsencrypt/live/test.i18ntech.com/fullchain.pem', //free cert refer https://github.com/postor/certbot-express
@@ -47,7 +47,7 @@ app.prepare()
   })
   .then(() => {
     console.log('> Ready http on http://localhost')
-    !dev && console.log('> Ready http2 on https://localhost')
+    http2Enabled && console.log('> Ready http2 on https://localhost')
     process.send && process.send('http ready')
   })
   .catch((ex) => {
