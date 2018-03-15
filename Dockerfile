@@ -19,8 +19,6 @@ RUN npm install && npm run build
 
 RUN echo "{\"args\": [\"--no-sandbox\"]}" > tests/launch.json 
 
-RUN npm run test-docker
-
 EXPOSE 80
 
 CMD ["node", "server.js"]
