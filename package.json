@@ -46,6 +46,7 @@
     "gulp-eslint": "^4.0.0",
     "gulp-jest": "^3.0.1",
     "jest": "^22.2.2",
+    "puppeteer": "^1.1.1",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "^16.2.0"
   }
