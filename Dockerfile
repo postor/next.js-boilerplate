@@ -13,9 +13,11 @@ ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils 
 
 ADD . /app
 
-RUN npm install && npm run build && npm run test
+RUN npm install && npm run build
 
 RUN echo "{\"args\": [\"--no-sandbox\"]}" > tests/launch.json 
+
+RUN npm run test-docker
 
 EXPOSE 80
 
