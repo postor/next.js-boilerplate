@@ -8,7 +8,8 @@ const { redirect, http2 } = require('certbot-express')
 const apiRoute = require('./tools/api-route')
 
 const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
+const test = process.env.NODE_ENV == 'test'
+const app = next({ dev: test ? false : dev })
 
 
 //routes
@@ -38,7 +39,7 @@ app.prepare()
 
     //http && http2
     return http2({
-      dev,  // only http for dev
+      dev: test ? true : dev,  // only http for dev
       app: server,
       keyPath: '/etc/letsencrypt/live/test.i18ntech.com/privkey.pem',    //free cert refer https://github.com/postor/certbot-express
       certPath: '/etc/letsencrypt/live/test.i18ntech.com/fullchain.pem', //free cert refer https://github.com/postor/certbot-express
