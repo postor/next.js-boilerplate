@@ -15,7 +15,7 @@ ENV NODE_ENV=production PORT=80
 
 ADD . /app
 
-RUN npm install && npm run build
+RUN NODE_ENV=dev npm install && npm run build
 
 RUN echo "{\"args\": [\"--no-sandbox\"]}" > tests/launch.json 
 
