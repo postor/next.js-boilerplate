@@ -11,14 +11,16 @@ libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxc
 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
 
+ENV NODE_ENV=production PORT=80
+
 ADD . /app
 
-RUN npm install && npm run build && npm run test
+RUN NODE_ENV=dev npm install && npm run build
 
 RUN echo "{\"args\": [\"--no-sandbox\"]}" > tests/launch.json 
 
-EXPOSE 80
+RUN npm run test-docker
 
-ENV NODE_ENV=production PORT=80
+EXPOSE 80
 
 CMD ["node", "server.js"]
