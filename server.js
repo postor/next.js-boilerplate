@@ -1,7 +1,5 @@
 const express = require('express')
 const next = require('next')
-const spdy = require('spdy')
-const fs = require('fs')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const { redirect, http2 } = require('certbot-express')

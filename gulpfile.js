@@ -10,6 +10,7 @@ gulp.task('lint-es6', function () {
     '!server.js',
     '!tools/routes.js',
     '!gulpfile.js',
+    '!tests/**/*.js',
   ])
     .pipe(eslint())
     .pipe(eslint.format())
