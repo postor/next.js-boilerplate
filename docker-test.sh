@@ -1,1 +1,1 @@
-npm run lint && npm run jest
+npm run lint && curl $WEBHOST && npm run jest
