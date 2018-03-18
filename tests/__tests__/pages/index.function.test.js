@@ -13,9 +13,7 @@ describe('index-function', () => {
     console.log(`http://${webhost}?d=change-language`)
     await page.goto(`http://${webhost}?d=change-language`)
 
-
-    const enTitle = await page.title()
-    expect(enTitle).toBe('Home')
+    await page.waitForFunction('document.title==`Home`', { timeout: 5000 })
 
     await page.click('select')
     await page.select('select', 'zh')
