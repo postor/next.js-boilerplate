@@ -1,4 +1,5 @@
 import { browserLangs, cookieLangs, devices, launch } from '../../utils'
+const webhost = process.env.WEBHOST || 'localhost'
 
 describe('index-function', () => {
   const enBrowser = browserLangs.find((x) => x.lang = 'en')
@@ -9,7 +10,7 @@ describe('index-function', () => {
     const page = await browser.newPage()
     await page.evaluateOnNewDocument(enBrowser.evaluate)
     await page.setExtraHTTPHeaders(enBrowser.headers)
-    await page.goto(`http://localhost?d=change-language`)
+    await page.goto(`http://${webhost}?d=change-language`)
 
 
     const enTitle = await page.title()

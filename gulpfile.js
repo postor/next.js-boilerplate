@@ -59,26 +59,3 @@ gulp.task('test', function () {
     })
   })
 });
-
-gulp.task('test-docker', function () {
-  return new Promise((resolve, reject) => {
-    const server = fork('./server.js', { maxBuffer: 1024 * 1024 })
-    server.on('message', (m) => {
-      if (m === 'http ready') {
-        const jestProcess = exec('npm run jest', { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
-          if (error) {
-            throw error
-          }
-          console.log(stdout, stderr)
-          server.kill()
-          resolve()
-        })
-        jestProcess.on('exit', (code) => {
-          if (code != 0) {
-            throw 'jest faild'
-          }
-        })
-      }
-    })
-  })
-});

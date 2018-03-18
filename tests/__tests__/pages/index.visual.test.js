@@ -1,5 +1,6 @@
 import { browserLangs, cookieLangs, devices, launch } from '../../utils'
 import { inspect } from 'util'
+const webhost = process.env.WEBHOST || 'http://localhost'
 
 describe('index-differencify', () => {
   let done = false
@@ -16,7 +17,7 @@ describe('index-differencify', () => {
           await page.setCookie(...cookieLang.cookies)
           await page.evaluateOnNewDocument(browserLang.evaluate)
           await page.setExtraHTTPHeaders(browserLang.headers)
-          await page.goto(`http://localhost?d=${d}`)
+          await page.goto(`http://${webhost}?d=${d}`)
           const image = await page.screenshot()
           const result = await target.toMatchSnapshot(image)
           expect(result).toBe(true)
