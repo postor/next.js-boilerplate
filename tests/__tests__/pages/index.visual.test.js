@@ -1,6 +1,6 @@
 import { browserLangs, cookieLangs, devices, launch } from '../../utils'
 import { inspect } from 'util'
-const webhost = process.env.WEBHOST || 'http://localhost'
+const webhost = process.env.WEBHOST || 'localhost'
 
 describe('index-differencify', () => {
   let done = false

@@ -10,6 +10,7 @@ describe('index-function', () => {
     const page = await browser.newPage()
     await page.evaluateOnNewDocument(enBrowser.evaluate)
     await page.setExtraHTTPHeaders(enBrowser.headers)
+    console.log(`http://${webhost}?d=change-language`)
     await page.goto(`http://${webhost}?d=change-language`)
 
 
