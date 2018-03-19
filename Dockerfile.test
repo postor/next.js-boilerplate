@@ -15,7 +15,7 @@ ADD . /app
 
 RUN npm install 
 
-ENV NODE_ENV=test WEBHOST=webhost
+ENV NODE_ENV=test
 
 RUN echo "{\"args\": [\"--no-sandbox\"]}" > tests/launch.json 
 
