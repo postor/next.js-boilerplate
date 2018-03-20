@@ -39,7 +39,7 @@ I18n and Redux should be standard for React, still we need to apply using them f
 Security, now all your logic are available by the browser (even if you use uglify), one logic for both server side and browser make your easier to maintain your logic while cheating become more easier. You must keep your data api work with user identity closely, to make your data safe, csrf+Cookie/csrf+token is the most basical and efficient way.
 
 
-## 迁出代码、安装依赖、启动服务 git\install\start
+## 迁出代码、安装依赖、启动服务 git/install/start
 
 ```
 git checkout https://github.com/postor/nextjs-cookie-example.git
@@ -59,6 +59,14 @@ node server.js
 yarn test
 ```
 
+此命令会自动编译、启动服务并进行测试，如果使用已经部署好的服务，可以通过配置环境变量 `WEBHOST` 后运行 `yarn jest` 实现
+
+this command will build, run and test, if you want to test an existing host, you can use ENV `WEBHOST` and `yarn jest`
+
+```
+NODE_ENV=test WEBHOST=www.example.com yarn jest
+```
+
 显示测试在第一次运行时只会生成对应截图，不进行比对
 
 visual test will only generate screenshots for the first time
@@ -67,3 +75,17 @@ visual test will only generate screenshots for the first time
 你需要根据你的环境配置puppeteer，可以调整[package.json](./package.json)中的`scripts.jest`配置 和 [tests/utils.js](./tests/utils.js)中的`launch`函数
 
 you need to config puppeteer according to your env, in [package.json](./package.json) you can modify `scripts.jest` and in [tests/utils.js](./tests/utils.js) modify `launch` function
+
+## CI/CD/DEVOPS
+
+如果你使用docker cloud，那么只需要fork本仓库后关联到docker cloud的仓库即可
+
+if you are using docker cloud, then the only thing you need to do is fork this repo and then connect to your docker cloud repo
+
+[postor/nextjs-devops](https://store.docker.com/community/images/postor/nextjs-devops) 就是fork之后通过docker cloud构建且通过测试的例子，你可以使用docker cloud的服务启动，也可以直接使用`docker run`命令来启动它
+
+[postor/nextjs-devops](https://store.docker.com/community/images/postor/nextjs-devops) is an example built and tested by docker cloud, you can create service on docker cloud, also you can use `docker run`
+
+```
+docker run -p80:80 -t postor/nextjs-devops
+```

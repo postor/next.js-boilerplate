@@ -1,4 +1,5 @@
 import { browserLangs, cookieLangs, devices, launch } from '../../utils'
+const webhost = process.env.WEBHOST || 'localhost'
 
 describe('index-function', () => {
   const enBrowser = browserLangs.find((x) => x.lang = 'en')
@@ -9,11 +10,10 @@ describe('index-function', () => {
     const page = await browser.newPage()
     await page.evaluateOnNewDocument(enBrowser.evaluate)
     await page.setExtraHTTPHeaders(enBrowser.headers)
-    await page.goto(`http://localhost?d=change-language`)
+    console.log(`http://${webhost}?d=change-language`)
+    await page.goto(`http://${webhost}?d=change-language`)
 
-
-    const enTitle = await page.title()
-    expect(enTitle).toBe('Home')
+    await page.waitForFunction('document.title==`Home`', { timeout: 5000 })
 
     await page.click('select')
     await page.select('select', 'zh')
